@@ -19,11 +19,15 @@ int main(int argc, char *argv[]) {
 		printf("Length must be at least 1\n");
 		return 0;
 	}
-	
+
+/* Some symbols + letters A-Z in the ASCII table */
+
 	for(int i = 0; i < 43; i++)
 	{
 		randomLetters[i] = (char) (48 + i);
 	}
+
+/* Builds letters a-z (undercase) in the ASCII table */
 
 	for(int i = 43; i < 69; i++)
 	{
@@ -33,7 +37,7 @@ int main(int argc, char *argv[]) {
 	time_t t;
 	srand((unsigned) time(&t));
 
-	// Generate random word
+	// Generates random passwords
 	
 	for(int l = 0; l < passGenerations; l++)
 	{
