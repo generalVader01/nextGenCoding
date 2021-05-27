@@ -1,0 +1,2 @@
+# nextGenCoding
+Simple. Effective. Glorious.
