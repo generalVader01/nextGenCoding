@@ -17,19 +17,11 @@
 
 int main(void)
 {
-	char plaintext[1024], table[26], privateKey[1024], ciphertext[1024];
+	char plaintext[1024], privateKey[1024], ciphertext[1024];
 	
 	printf("Enter plaintext: ");
 	scanf("%[^\n]", plaintext);
 	
-	// Set the rest of the table with A-Z
-	for(int i = 0; i < 25; i++)
-	{
-		table[i] = (char) (65 + i);
-	}
-	
-	printf("%s\n", table);
-
 	// converts undercase to uppercase
 	for(int i = 0; i < strlen(plaintext); i++)
 	{
@@ -95,30 +87,33 @@ int main(void)
 
 	putchar('\n');
 	
-	/*	
+		
 	printf("Decrypt: ");
 	
 	for(int i = 0; i < length; i++)
 	{
-		int z = 0; 
+		int z = 0;
+	        //printf("Ciphertext: %d, privateKey: %d\n", ciphertext[i], privateKey[i]);
+
 		if(ciphertext[i] > privateKey[i])
 		{
-			z = (( (ciphertext[i] - 'A') - (privateKey[i] - 'A' )) % 26) + 'A';
-		} else if (ciphertext[i] < privateKey[i])
+			z = (ciphertext[i] - privateKey[i]) + 'A';
+		} else if (privateKey[i] > ciphertext[i])
 		{
-			z = (( (privateKey[i] - 'A' ) - (ciphertext[i] - 'A' )) % 26)  + 'A';		
+			z = (ciphertext[i] - privateKey[i])  + 'A' + 26;		
 		} else if (ciphertext[i] == privateKey[i])
 		{
-			z = (( (privateKey[i] - 'A' ) - (ciphertext[i] - 'A' )) % 26) + 'A';
+			z = (privateKey[i] - ciphertext[i]) + 'A';
 		} else {
 
 		printf("Something is quite wrong.\n");
 		}
+
 		putchar(z);
 	}
 
 	putchar('\n'); 
-	*/
+	
 	
 	return 0;	
 }
