@@ -6,19 +6,20 @@
 
 int main(void)
 {
-	char plaintext[1024], privateKey[1024], ciphertext[1024];
+	char plaintext[1024], privateKey[1024], ciphertext[1024], escape;
 	int length = 0, z;
 
+	printf("Enter key: ");
+        fgets(privateKey, sizeof(privateKey), stdin);
 	printf("Enter Ciphertext: ");
 	fgets(ciphertext, sizeof(ciphertext), stdin);
-	printf("Enter key: ");
-	fgets(privateKey, sizeof(privateKey), stdin);
-	
-	int escape = 0;
 	
 	while(escape == 0)
 	{
-		if(privateKey[length] < 'A' || privateKey[length] > 'Z')
+		if(privateKey[length] == 32)
+		{
+		
+		} else if(privateKey[length] < 'A' || privateKey[length] > 'Z')
 		{
 			escape = 1;
 			length--;
@@ -34,8 +35,10 @@ int main(void)
 
 	for(int i = 0; i < length; i++)
 	{
-
-		if(ciphertext[i] >= privateKey[i])
+		if(ciphertext[i] == 32)
+		{
+			z = ' ';
+		} else if(ciphertext[i] >= privateKey[i])
 		{
 			z = (ciphertext[i] - privateKey[i]) + 'A';
 		} else if (privateKey[i] > ciphertext[i])
