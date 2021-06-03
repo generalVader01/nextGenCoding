@@ -2,13 +2,16 @@
 #include <time.h>
 #include <stdio.h>
 
+int help(long size);
+
 int main(void)
 {
 	char plaintext[1024], privateKey[1024], ciphertext[1024], escape = 0;
 	int length = 0, whitespaces = 0;
+	long size = sizeof(plaintext); 
+
 	time_t t;
 	srand( (unsigned) time(&t));
-
 	printf("Enter plaintext: ");
 	scanf("%[^\n]", plaintext);
 	
@@ -40,10 +43,8 @@ int main(void)
 		printf("Length must be at least 1 and less than %ld characters", sizeof(plaintext));
 		return -1;		
 	 }
-
-//	time_t t;
-//	srand((unsigned) time(&t));
 	
+	// Generate key 
 	printf("Key: ");
 	
 	for(int i = 0; i < length; i++)
@@ -57,9 +58,10 @@ int main(void)
 			putchar(privateKey[i]);
 		}
 	}
-
+	
 	putchar('\n');
-
+	
+	// Generate ciphertext
 	for(int i = 0; i < length; i++)
 	{
 		if(plaintext[i] == 32)
@@ -80,4 +82,11 @@ int main(void)
 	putchar('\n');
 	
 	return 0;	
+}
+
+int help(long size)
+{
+	printf("Valid usage: uppercase letters, undercase letters, and spaces. Symbols or numbers will break the program.\nThe generated key will be 100%% secure if you use it only once and discard");
+	printf("\nThe plaintext must be at least 1 character and no larger than %ld characters\n", size);
+	return -1;
 }

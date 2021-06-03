@@ -1,0 +1,4 @@
+Save Plaintext to file
+save ciphertext to file
+Save key to file
+Enable numbers (0-9) to be included
