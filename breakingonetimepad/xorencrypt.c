@@ -1,3 +1,7 @@
+/*
+ * Program to break a one time pad used multiple times
+ * */
+
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
