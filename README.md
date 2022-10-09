@@ -1,2 +1,2 @@
 # nextGenCoding
-Simple. Effective. Glorious.
+Collection of some projects i've developed. 
