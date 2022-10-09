@@ -21,9 +21,10 @@
  * 1.01: Added the space character to the generate list
  * 1.02: Fixed return values. Errors are now returning negative 1. 0 is returned only for success
  * 1.03: Removed Magic Number for the Character Source List for Generation. It is now defined as a variable
- * 1.04: Changed input from signed int to unsigned int.
+ * 1.04: All variables are now unsigned and reduced to it's lowest needed size (int -> char) 
  * 1.05: included limits library. Now checking to make sure that specified input does not exceed limits of data type
  * 1.06: Big update. Added options to enable spaces, symbols, numbers, uppercase, and undercase in the charset. 
+ * 1.06.: Added an escape condition if all options are set to false
 */
 
 int main(int argc, char *argv[]) {
@@ -52,7 +53,7 @@ int main(int argc, char *argv[]) {
 		printf("Your input has exceeded the limits of the unsigned int data type\n");
 	        printf("Please specify a input value less than %u\n", UINT_MAX);
 		return -1;
-	}	
+	}
 	
 	// Add a Space if enabled 	
 	if(SPACES == TRUE)
@@ -111,6 +112,12 @@ int main(int argc, char *argv[]) {
 		{
 			randomLetters[genLength] = (char) i;
 		}
+	}
+
+	if(genLength == 0)
+	{
+		printf("Try enabling one of the character sets (uppercase/symbols/undercase/numbers)\n");
+		return -1;
 	}
 
 	time_t t;
