@@ -28,10 +28,6 @@ int scale = 1; // scale the the numbers will be printed to
 int main(int argc, char *argv[])
 {
 
-//int help = argv[2]; 
-//printf("%d", help); 
-//help = *argv[2]; 
-
   if ((argc == 1 || argc > 3))
   { // Test for the correct number of arguments
     printf("You need to run the program with at least one argument\n");
@@ -41,19 +37,6 @@ int main(int argc, char *argv[])
     return 0;
   }
 
-
-/*
-char *help = "help"; 
-char *arg2 = argv[2]; 
-if ( argc == 2) 
-{
-
-  if ( help == arg2)
-  {
-  printf("Help menu\n"); 
-  } 
-}
-*/
   char num[NUMBER_LENGTH]; 
   strcpy(num, argv[1]); // Stores first argument into string
   if (num[0] == '-') signBit = TRUE; // Test if input number is negative
