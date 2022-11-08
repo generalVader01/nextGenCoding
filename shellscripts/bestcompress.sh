@@ -2,7 +2,7 @@
 # bestcompress.sh --Given a file, tries compressing it with all the available
 # compression tools and keeps the compressed file that's smallest
 
-Z="compress" gz="gzip" bz="bzip2"
+Z="zip" gz="gzip" bz="bzip2"
 Zout="/tmp/bestcompress.$$.Z"
 gzout="/tmp/bestcompress.$$.gz"
 bzout="/tmp/bestcompress.$$.bz"
@@ -14,7 +14,7 @@ fi
 
 if [ $# -eq 0 ]; then
 	echo "Usage: $0 [-a] file or files to optimally compress" >&2
-exit 1
+	exit 1
 fi
 
 trap "/bin/rm -f $Zout $gzout $bzout" EXIT
@@ -30,7 +30,7 @@ do
 	if [ "$(echo $name | egrep '(\.Z$|\.gz$|\.bz2$)')" != "" ] ; then
 		if [ $skipcompressed -eq 1 ] ; then
 			echo "Skipped file ${name}: It's already compressed."
-		continue
+			continue
 	else
 		echo "Warning: Trying to double-compress $name"
 	fi
@@ -42,7 +42,9 @@ $Z < "$name" > $Zout &
 $gz < "$name" > $gzout &
 $bz < "$name" > $bzout &
 
-wait # Wait until all compressions are done.
+wait
+
+# Wait until all compressions are done.
 # Figure out which compressed best.
 
 smallest="$(ls -l "$name" $Zout $gzout $bzout | \
@@ -54,7 +56,7 @@ case "$smallest" in
 1 ) echo "No space savings by compressing $name. Left as is."
 ;;
 
-2 ) echo Best compression is with compress. File renamed ${name}.Z
+2 ) echo Best compression is with zip. File renamed ${name}.Z
 mv $Zout "${name}.Z" ; rm -f "$name"
 ;;
 
