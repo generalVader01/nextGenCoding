@@ -951,6 +951,8 @@ gobuster dir -u http://10.11.1.111 -w /usr/share/seclists/Discovery/Web_Content/
 gobuster dir -e -u http://10.11.1.111/ -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt
 gobuster dir -u http://$10.11.1.111 -w /usr/share/seclists/Discovery/Web_Content/Top1000-RobotsDisallowed.txt
 gobuster dir -e -u http://10.11.1.111/ -w /usr/share/wordlists/dirb/common.txt
+# Gobuster: Finding html, pdf, txt, php or asp files
+gobuster dir -u http://192.168.223.83:8088 -w /usr/share/wordlists/dirb/big.txt -x ".html, .pdf, .txt, .php, .asp"
 
 dotdotpwn.pl -m http -h 10.11.1.111 -M GET -o unix
 
