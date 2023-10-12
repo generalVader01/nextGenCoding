@@ -2639,5 +2639,3 @@ cat c:\\Inetpub\\iissamples\\sdk\\asp\\components\\adrot.txt
 # Recursive search
 dir /s
 ```
-
-      Stapler _ VulnHub
