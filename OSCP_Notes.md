@@ -491,7 +491,8 @@ nmap --script=smb-enum* --script-args=unsafe=1 -T5 10.11.1.111
 
 # Get Version
 smbver.sh 10.11.1.111
-Msfconsole;use scanner/smb/smb_version
+# Get smb_version
+	sudo Msfconsole -x "use scanner/smb/smb_version; set RHOSTS 192.168.X.X; run"
 ngrep -i -d tap0 's.?a.?m.?b.?a.*[[:digit:]]'
 smbclient -L \\\\10.11.1.111
 
