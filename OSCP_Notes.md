@@ -1377,6 +1377,12 @@ XXE OOB
 
 ## Password brute force - last resort
 
+
+# Checklist
+	1) Try logging in as $username:$username. Ex: goat:goat
+ 	2) Hashcat sometimes fails to crack hashes. In this case, simply try out john
+  	3) Last resort is using the rock you wordlist
+   
 Offline local resources
 
 ```
