@@ -44,6 +44,7 @@ Table of Contents
       * [Port 27017 - MongoDB](#port-27017-mongodb)
       * [Webdav](#webdav)
       * [Unknown ports](#unknown-ports)
+      * [Port 6667 - irc](#port-6667-irc)
       * [Port 80 - Web server](#port-80-web-server)
          * [Url brute force](#url-brute-force)
          * [Default/Weak login](#defaultweak-login)
@@ -889,6 +890,16 @@ cadaver http://target
 - Try zone transfer for subdomains: `dig axfr @10.11.1.111 hostname.box`, `dnsenum 10.11.1.111`, `dnsrecon -d domain.com -t axfr`
 
 Try admin:admin, user:user
+
+## Port 6667 - IRC
+
+Connect up to server using irssi
+	irssi $ip
+	/server connect $ip
+
+ From the output, grab the server version. Look up in searchsploit
+
+ Vulnerable to RCE versions: UnrealIRCd 3.2.8.1
 
 ## Port 80 - Web server
 
@@ -2893,6 +2904,12 @@ Folder Is not writable
    		python -c 'import os; os.system("/bin/sh")'
    	3) Reconnecting to server with no profile
     		ssh -o StrictHostKeyChecking=no -i id_rsa tom@192.168.120.138 -t "bash --noprofile"
+
+# Last Resort
+
+	root:root
+ 	admin:admin
+  
 
 # Random Tips
 
