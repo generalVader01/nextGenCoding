@@ -916,6 +916,11 @@ nikto -h http://10.11.1.111
 # Nikto with squid proxy
 nikto -h 10.11.1.111 -useproxy http://10.11.1.111:4444
 
+# Drupal
+
+droopescan located in ~/.local/bin/droopescan
+./droopescan scan -u  http://192.168.100.184/
+
 # CMS Explorer
 cms-explorer -url http://10.11.1.111 -type [Drupal, WordPress, Joomla, Mambo]
 
