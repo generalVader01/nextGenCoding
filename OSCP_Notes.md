@@ -944,7 +944,7 @@ wpscan --url http://10.11.1.111 --enumerate u
 wpscan -e --url https://url.com
 
 # Password Cracking
-	wpscan –url http://example.com –passwords /home/kali/Documents/crack/rockyou.txt –usernames admin
+	wpscan --url http://192.168.x.x:80 --passwords /home/kali/Documents/crack/rockyou.txt --usernames admin,tom,jerry
 
 # Check For Users
 	wpscan --url yourwebsite.com -e u
