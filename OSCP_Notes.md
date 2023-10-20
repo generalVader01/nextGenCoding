@@ -2957,6 +2957,15 @@ root@assertion:/#
       	export PATH=/bin:/usr/bin:$PATH
       	export SHELL=/bin/bash:$SHELL
 
+# SSH id_rsa Username Disclosure
+
+Username should be on the last line. Ex: oscp@oscp
+cat id_rsa | base64 -d
+...
+΋~���   oscp@oscp                                
+
+                          
+
 # Last Resort
 
 	root:root
