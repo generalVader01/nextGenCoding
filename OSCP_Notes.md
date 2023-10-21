@@ -981,6 +981,10 @@ wpscan --url https://192.168.200.148:12380/blogblog/wp-login.php --passwords ../
 
 	weevely generate password backdoor.php
 
+# Transforming long text into one word per line
+# Useful for password cracking
+
+curl http://192.168.164.142/iamGaara | grep -oE '\w+' | sort -u -f | more
 
 ----
 
