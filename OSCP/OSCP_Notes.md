@@ -1081,14 +1081,13 @@ python3 firebase.py -p 4 --dnsdumpster -l file
 ### Url brute force
 
 ```
-# Ffuf
-ffuf -c -e '.htm','.php','.html','.js','.txt','.zip','.bak','.asp','.aspx','xml','.log' -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories-lowercase.txt -u https://10.11.1.11/mvc/FUZZ
+# Fuzzing php files With ffuf
+
+ffuf -u 'http://192.168.164.212/secret/evil.php?FUZZ=/etc/passwd' -w /usr/share/wordlists/dirbuster/directory-list-2.3-small.txt -fs 0
 
 # Dirb not recursive
 dirb http://10.11.1.111 -r -o dirb-10.11.1.111.txt
 
-# Wfuzz
-wfuzz -c -z file,/usr/share/wfuzz/wordlist/general/common.txt --hc 404 http://10.11.1.11/FUZZ
 
 # GoBuster
 gobuster dir -u http://10.11.1.111 -w /usr/share/seclists/Discovery/Web_Content/common.txt -s '200,204,301,302,307,403,500' -e -t 50
