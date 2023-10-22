@@ -1,3 +1,9 @@
+# Usage: python ./icmp_receiver.py
+# Wait for your host to receive ICMP packets
+# Program will automatically quit when it receives more than 2602 bytes (length of id_rsa)
+# Adjust this number if you are receiving larger data sizes
+# Note: You will need to run this script as sudo if you do not explicitly give raw socket privileges to this program
+
 import socket
 import struct
 import sys
