@@ -2954,6 +2954,9 @@ su root
 Password: password
 root@assertion:/#     
 
+ # Inspecting Processes To See Who And When Programs Are Being RUn
+	
+ ./pspy64
  
  # Breaking Out Of Restricted Shells
 
