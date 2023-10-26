@@ -3012,8 +3012,11 @@ Crack With John:
 
 Connect up like so: ssh -i id_rsa daniela@192.168.50.244
 	Enter in the password found from john. id_rsa is required to be specified during connection
+  # Command Injection Via Base64
 
- 
+  $(echo "BASE64_ENCODED_COMMAND" | base64 -d)
+ 	Will decode and run the command. Useful when escaping filters.
+  
   # Wordpress
 
  	Reverse Shell Via Theme Editor: 
