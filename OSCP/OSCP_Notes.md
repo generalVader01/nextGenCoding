@@ -2985,6 +2985,8 @@ cat id_rsa | base64 -d
 
 	root:root
  	admin:admin
+
+  	Check /var/mail for leftover mail
   
 
 # Random Tips
