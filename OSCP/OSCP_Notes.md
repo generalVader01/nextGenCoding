@@ -3043,6 +3043,13 @@ webadmin@serv:/notes$ ls /notes
 clear.sh  id.sh
 webadmin@serv:/notes$ 
 
+# Assessing Creds From Process Dump
+
+Summary: Occassionally you will have sudo/admin access to a tool that can dump process memory to disk,
+	 As a low priv user. Dump to file. then use the strings command to find interesting passwords
+
+  Typcial processes include: password manager, SSH login, etc
+
 # Smuggling Data With ICMP
 
 Summary: Tools like hping3 can be used to read local files and send the contents of it to a remote host. 
