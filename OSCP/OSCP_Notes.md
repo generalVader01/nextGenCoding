@@ -313,6 +313,11 @@ SSH no matching key exchange method found:
 
 ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 bob@10.11.1.136
 
+Server requiring ssh-rsa,ssh-dss:
+	ssh -p 22 patrick@192.168.216.39 -oHostKeyAlgorithms=+ssh-dss 
+Error message: Unable to negotiate with 192.168.216.39 port 22: no matching host key type found. Their offer: ssh-rsa,ssh-dss
+
+
 Force Auth Method:
 
 $ ssh -v 10.10.1.111 -o PreferredAuthentications=password
