@@ -909,8 +909,17 @@ nmap -sV --script "mongo* and default" -p 27017 <IP> #By default all the nmap mo
 ## Webdav
 
 ```
-davtest -cleanup -url http://target
-cadaver http://target
+Summary: Basic HTTP Authentication. If we get valid creds, we can upload reverse shells.
+
+Default Location of password file: /var/www/html/webdav/passwd.dav
+
+Login:
+	cadaver http://target
+
+Upload Shell
+	put reverse.php .
+
+
 ```
 
 ## Unknown ports
