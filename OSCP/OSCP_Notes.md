@@ -3165,4 +3165,7 @@ run
 	Uploading To Upload.php With Curl:
  		curl -F myFile=@family_guy_stare.jpg http://192.168.216.183/exiftest.php
 
+	Pretending To Be Google:
+ 		curl -A "GoogleBot" $URL
+		Note: Useful when access is restricted to robots.txt
 # Work
