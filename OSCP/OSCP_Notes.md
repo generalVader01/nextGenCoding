@@ -3142,6 +3142,11 @@ run
 	Write Access to /etc/apt/apt.conf.d, apt-get update run on cronjob by root:
  		echo 'APT::Update::Pre-Invoke {"chmod 777 /etc/passwd";}' >> 3update
 
+# AWK 
+	Printing Data After Third Colon Delimiter:
+    		awk -F':' '{print $4}' input_file
+		Note: Useful when formating data dumps for medusa or organization
+  
 # PHP Extension
 
 	Getting DOM support: sudo apt-get install php-xml   
@@ -3168,4 +3173,3 @@ run
 	Pretending To Be Google:
  		curl -A "GoogleBot" $URL
 		Note: Useful when access is restricted to robots.txt
-# Work
