@@ -3188,3 +3188,16 @@ run
 	Pretending To Be Google:
  		curl -A "GoogleBot" $URL
 		Note: Useful when access is restricted to robots.txt
+
+# Python Virtual Environment
+
+	Summary: Sometimes you will need to install a large amount of python extensions to run an exploit.
+ 		 It is best to install these in a virtual environment, so that the core system packages are untouched
+
+     	python -m venv myenv
+      	source myenv/bin/activate
+        cd exploit_dir
+	pip install -r requirements.txt
+  	deactivate
+  
+       
