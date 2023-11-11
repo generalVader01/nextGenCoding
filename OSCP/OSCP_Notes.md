@@ -3162,7 +3162,19 @@ run
     		awk -F':' '{print $4}' input_file
 		Note: Useful when formating data dumps for medusa or organization
   
-# PHP Extension
+# Sync History Files
+
+ 	Put into Bashrc.
+		HISTCONTROL=ignoredups:erasedups
+		shopt -s histappend
+	# After each command, append to the history file and reread it
+		PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+
+# Helper Packages
+	
+ 	sudo apt install python3
+	sudo apt install python3-pip
+	sudo apt install seclists curl dnsrecon enum4linux feroxbuster gobuster impacket-scripts nbtscan nikto nmap onesixtyone oscanner redis-tools smbclient 	                  smbmap snmp sslscan sipvicious tnscmd10g whatweb wkhtmltopdf
 
 	Getting DOM support: sudo apt-get install php-xml   
 	Getting PHP Curl Support: sudo apt-get -u install php-curl 
