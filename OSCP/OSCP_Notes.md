@@ -3251,3 +3251,18 @@ int main(){
      	id_ed25519_sk
       	id_dsa
        ```
+# Chisel Usage
+
+```
+Client Side:
+	chisel.exe client 192.168.45.210:8000 R:socks
+
+Kali Side:
+	./chisel_linux server --socks5 -p 8000 –reverse
+
+Note: I had to add this entry into the proxychains4.conf file:
+	socks5  127.0.0.1 1080
+
+Note 2: If you get a notice that the port is in use, even after you have killed the process.
+	You can manually kill the zombie process to free the port
+```
