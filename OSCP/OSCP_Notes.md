@@ -3241,3 +3241,13 @@ int main(){
  	# 64-Bit
  		x86_64-w64-mingw32-gcc adduser.c -o adduser.exe
   	```
+
+# SSH Private-Key Default Names
+	```
+ 	id_rsa
+  	id_ecdsa
+   	id_ecdsa_sk
+    	id_ed25519
+     	id_ed25519_sk
+      	id_dsa
+       ```
