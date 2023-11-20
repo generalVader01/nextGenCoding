@@ -542,6 +542,11 @@ smbclient -L \\\\10.11.1.111
 # Uploading file to share via curl. Requires creds
 
 	curl --upload-file /path/to/file.ext  -u 'DOMAIN\Username' smb://192.168.x.x/ShareName/
+
+# Recursively List File Contents
+	smbclient -U zackary%54abdf854d8c0653b1be //192.168.199.248/transfer
+	typed recurse to toggle recursion off/on
+	type ls
 # Get Shares
 	smbmap -H  10.11.1.111 -R <sharename>
 	sudo smbmap -H 10.11.1.136 -R --download "Bob Share\Draft Contract Mr. Yamamoto.txt" # Connect to a share with a space & download files
@@ -1511,7 +1516,12 @@ https://github.com/LandGrey/pydictor
 https://github.com/Mebus/cupp
 git clone https://github.com/sc0tfree/mentalist.git
 ```
+John
+```
+1) keepass2john Database.kdbx > keepass.hash
+2) john --wordlist=~/Documents/crack/rockyou.txt keepass.hash
 
+```
 Hashcat
 ```
 https://hashcat.net/wiki/doku.php?id=example_hashes // m parameter
