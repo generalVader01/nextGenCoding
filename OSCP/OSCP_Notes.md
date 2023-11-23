@@ -2698,17 +2698,11 @@ sudo john --format=krb5tgs hash.txt --wordlist=/home/kali/Documents/crack/rockyo
 	- Browser:
 	- Mail:
 
-### Proof
+### Proof & Local
 ```
-echo -e '\n'HOSTNAME:   && hostname && echo -e '\n'WHOAMI:   && whoami && echo -e '\n'PROOF:  && cat proof.txt && echo -e '\n'IFCONFIG:  && /sbin/ifconfig && echo -e '\n'PASSWD:  && cat /etc/passwd && echo -e '\n'SHADOW:  && cat /etc/shadow && echo -e '\n'NETSTAT:  && netstat -antup
+	Windows: whoami && type proof.txt && ipconfig
+	Linux: whoami && cat proof.txt && ip a
 ```
-### Local
-```
-find / -type f -name local.txt 2>/dev/null
-
-cat local.txt
-```
-
 ### Network secret
 
 ```
