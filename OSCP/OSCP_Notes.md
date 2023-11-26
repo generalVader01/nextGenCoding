@@ -3264,4 +3264,9 @@ Note 2: If you get a notice that the port is in use, even after you have killed 
 	______________|_____________
 	ping          | Cases application to hang. Useful for testing blind command injection
 	timeout       | Causes application to hang. Useful if ping is not installed
-   
+```
+
+# Found .git Directory In Website
+
+	Dump it with git-dumpper
+	Examine for creds or other sensitive information
