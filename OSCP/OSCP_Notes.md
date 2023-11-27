@@ -3275,3 +3275,16 @@ Note 2: If you get a notice that the port is in use, even after you have killed 
 	Show differences:
 		git diff
 ```
+
+# Cracking Zip Files
+```
+Cracking Zip File:
+	fcrackzip -u -D -p /home/kali/Documents/crack/rockyou.txt SomeZip.backup
+
+Converting Zip To Hash:
+	zip2john back.zip > zip.txt
+
+Cracking:
+	john --wordlist=/home/kali/Documents/crack/rockyou.txt zip.txt
+
+```
