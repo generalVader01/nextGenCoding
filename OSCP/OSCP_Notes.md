@@ -685,7 +685,11 @@ openssl s_client -connect 10.11.1.111:993 -quiet  #Encrypted connection
 ```
 nmap -vv -sV -sU -Pn -p 161,162 --script=snmp-netstat,snmp-processes 10.11.1.111
 snmp-check 10.11.1.111 -c public|private|community
-
+# Verbose Inspetion
+	snmpwalk -v2c -c public 192.168.250.149 NET-SNMP-EXTEND-MIB::nsExtendObjects
+download-mibs
+apt-get install snmp-mibs-downloader
+# Finally comment the line saying "mibs :" in /etc/snmp/snmp.conf
 ```
 
 ## LDAP - 389,636
