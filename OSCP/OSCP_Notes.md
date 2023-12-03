@@ -1488,9 +1488,6 @@ XXE OOB
 - All at the same time.
 ```
 
-## Password brute force - last resort
-
-
 # Checklist
 	1) Try logging in as $username:$username. Ex: goat:goat
  	2) Hashcat sometimes fails to crack hashes. In this case, simply try out john
@@ -1543,13 +1540,14 @@ Hashcat
 https://hashcat.net/wiki/doku.php?id=example_hashes // m parameter
 https://mattw.io/hashID/types // hashid match
 
-hashcat -m 0 'hash$' /home/kali/Documents/crack/rockyou.txt  // MD5 raw
-hashcat -m 1800 'hash$' /home/kali/Documents/crack/rockyou.txt  // sha512crypt
-hashcat -m 1600 'hash$' /home/kali/Documents/crack/rockyou.txt  // MD5(APR)
-hashcat -m 1500 'hash$' /home/kali/Documents/crack/rockyou.txt  // DES(Unix), Traditional DES, DEScrypt
-hascat  -m 1000 'hash$' /home/kali/Documents/crack/rockyou.txt  // NTLM
-hashcat -m 500 'hash$' /home/kali/Documents/crack/rockyou.txt  // MD5crypt, MD5 (Unix)
-hashcat -m 400 'hash$'/home/kali/Documents/crack/rockyou.txt  // Wordpress
+hashcat -m 0 hash.txt /home/kali/Documents/crack/rockyou.txt  // MD5 raw
+hashcat -m 400 hash.txt /home/kali/Documents/crack/rockyou.txt  // Wordpress
+hashcat -m 500 hash.txt /home/kali/Documents/crack/rockyou.txt  // MD5crypt, MD5 (Unix)
+hashcat -m 1000 hash.txt /home/kali/Documents/crack/rockyou.txt  // NTLM
+hashcat -m 1500 hash.txt /home/kali/Documents/crack/rockyou.txt  // DES(Unix), Traditional DES, DEScrypt
+hashcat -m 1600 hash.txt /home/kali/Documents/crack/rockyou.txt  // MD5(APR)
+hashcat -m 1800 hash.txt /home/kali/Documents/crack/rockyou.txt  // sha512crypt
+hashcat -m 18200 hash.txt /home/kali/Documents/crack/rockyou.txt // AS-REP
 
 ```
 Online crackers
