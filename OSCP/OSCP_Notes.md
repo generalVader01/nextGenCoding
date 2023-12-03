@@ -3,7 +3,7 @@ Table of Contents
 
    * [Table of Contents](#table-of-contents)
    * [<strong>Recon</strong>](#recon)
-      * [Enumeration AIO](#enumeration-aio)
+      * [Enumeration](#enumeration)
       * [File enumeration](#file-enumeration)
          * [Common](#common)
          * [Disk files](#disk-files)
