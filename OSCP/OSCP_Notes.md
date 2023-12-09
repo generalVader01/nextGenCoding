@@ -1466,13 +1466,13 @@ Cracking:
 	Format will be something like: tom_admin:1001:aad3b435b51404eeaad3b435b51404ee:4979d69d4ca66955c075c41cf45f24dc:::
 
 ```
-
+# John
 ```
-John
-```
-1) keepass2john Database.kdbx > keepass.hash
-2) john --wordlist=~/Documents/crack/rockyou.txt keepass.hash
-
+Cracking Keepass:
+	1) keepass2john Database.kdbx > keepass.hash
+	2) john --wordlist=~/Documents/crack/rockyou.txt keepass.hash
+Cracking mscach2:
+	john --format=mscash2 --wordlist=../Documents/crack/rockyou.txt support.hash
 ```
 Hashcat
 ```
