@@ -1488,6 +1488,9 @@ hashcat -m 1600 hash.txt /home/kali/Documents/crack/rockyou.txt  // MD5(APR)
 hashcat -m 1800 hash.txt /home/kali/Documents/crack/rockyou.txt  // sha512crypt
 hashcat -m 18200 hash.txt /home/kali/Documents/crack/rockyou.txt // AS-REP
 
+
+Adding New MD5 Hash Via MySql: update cms_users set password = (select md5(CONCAT(IFNULL((SELECT sitepref_value
+FROM cms_siteprefs WHERE sitepref_name = 'sitemask'),''),'password'))) where username = 'admin';
 ```
 Online crackers
 
